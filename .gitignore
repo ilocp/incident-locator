@@ -13,3 +13,4 @@ capybara-*.html
 /spec/tmp/*
 rerun.txt
 pickle-email-*.html
+*.swp
