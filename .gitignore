@@ -1,0 +1,15 @@
+/.bundle
+/vendor/bundle
+/db/*.sqlite3
+/log/*.log
+/tmp
+*.rbc
+*.sassc
+.sass-cache
+capybara-*.html
+.rspec
+/public/system/*
+/coverage/
+/spec/tmp/*
+rerun.txt
+pickle-email-*.html
