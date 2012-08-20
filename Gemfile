@@ -8,6 +8,7 @@ gem 'rails', '3.2.7'
 group :development, :test do
   gem 'sqlite3'
   gem 'debugger'
+  gem 'haml-rails'
 end
 
 group :production do
