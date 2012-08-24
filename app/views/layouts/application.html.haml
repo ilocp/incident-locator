@@ -8,4 +8,17 @@
     = csrf_meta_tags
 
   %body
+    %header
+      -# logo goes here
+      %div Incident Locator
+      %nav
+        %ul
+          %li= link_to "Home", "#"
+          - if signed_in?
+            %li= link_to "Logout", logout_path, method: "delete"
+          - else
+            %li= link_to "Login", login_path
+
     = yield
+
+    %footer
