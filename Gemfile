@@ -9,6 +9,11 @@ group :development, :test do
   gem 'sqlite3'
   gem 'debugger'
   gem 'haml-rails'
+  gem 'rspec-rails'
+end
+
+group :test do
+    gem 'capybara'
 end
 
 group :production do
