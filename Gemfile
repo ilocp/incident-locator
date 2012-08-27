@@ -10,7 +10,6 @@ gem 'annotate', ">=2.5.0", group: :development
 group :development, :test do
   gem 'sqlite3'
   gem 'debugger'
-  gem 'haml-rails'
   gem 'rspec-rails'
 end
 
@@ -32,6 +31,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
+gem 'haml-rails'
 gem 'jquery-rails'
 
 # To use ActiveModel has_secure_password
