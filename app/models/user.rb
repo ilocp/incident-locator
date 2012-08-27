@@ -9,11 +9,18 @@
 #  updated_at      :datetime         not null
 #  name            :string(255)
 #
+# Indexes
+#
+#  index_users_on_email  (email) UNIQUE
+#
 
 class User < ActiveRecord::Base
   has_secure_password
 
   attr_accessible :name, :email, :password, :password_confirmation
+
+  # we need to be consistent as we use an index on email column
+  before_save { |user| user.email = email.downcase }
 
   # basic email regex
   RE_EMAIL = /\A[\w\-\.\+]+@[a-z\d\-\.]+[a-z]+\z/i

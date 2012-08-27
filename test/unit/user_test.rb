@@ -9,6 +9,10 @@
 #  updated_at      :datetime         not null
 #  name            :string(255)
 #
+# Indexes
+#
+#  index_users_on_email  (email) UNIQUE
+#
 
 require 'test_helper'
 
