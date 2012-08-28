@@ -77,5 +77,20 @@ describe User do
     it { should_not be_valid }
   end
 
+  describe "when password is blank" do
+    before { @user.password = @user.password_confirmation = '' }
+    it { should_not be_valid }
+  end
+
+  describe "when passwords do not match" do
+    before { @user.password_confirmation = 'something_different' }
+    it { should_not be_valid }
+  end
+
+  describe "when password is too short" do
+    before { @user.password = @user.password_confirmation = 'a' * 5 }
+    it { should_not be_valid }
+  end
+
 end
 
