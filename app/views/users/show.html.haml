@@ -1,8 +1,8 @@
 %p#notice= notice
 
-%p
-  %b Name:
-  = @user.name
+%h1= @user.name
+%div= gravatar_for @user
+
 %p
   %b Email:
   = @user.email
