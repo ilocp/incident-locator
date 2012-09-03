@@ -1,0 +1,11 @@
+%header
+  -# logo goes here
+  %div Incident Locator
+  %nav
+    %ul
+      %li= link_to "Home", "#"
+      - if signed_in?
+        %li= link_to "Sign out", signout_path, method: "delete"
+      - else
+        %li= link_to "Sign in", signin_path
+
