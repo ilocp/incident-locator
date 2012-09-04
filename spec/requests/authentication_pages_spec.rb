@@ -23,7 +23,7 @@ describe "Authentication" do
         end
     end
 
-    describe "with valid creadentials" do
+    describe "with valid credentials" do
       let(:user) { FactoryGirl.create(:user) }
       before do
         fill_in "Email", with: user.email
