@@ -56,7 +56,7 @@ describe "User pages" do
         let(:user) { User.find_by_email('test@example.com') }
 
         it { should have_h1(user.name) }
-        it { should have_link('Sign out', href: signout_path) }
+        it { should have_signout_link }
       end
     end
   end

@@ -24,6 +24,19 @@ flash_types.each do |flash_type|
   end
 end
 
+# machers for sign in/out links
+RSpec::Matchers.define :have_signin_link do
+  match do |page|
+    page.should have_link('Sign in', href: signin_path)
+  end
+end
+
+RSpec::Matchers.define :have_signout_link do
+  match do |page|
+    page.should have_link('Sign out', href: signout_path)
+  end
+end
+
 # sign in with valid credentials
 def valid_signin(user)
   fill_in "Email", with: user.email

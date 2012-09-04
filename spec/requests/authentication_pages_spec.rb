@@ -28,12 +28,12 @@ describe "Authentication" do
       before { valid_signin(user) }
 
       it { should have_h1(user.name) }
-      it { should have_link('Sign out', href: signout_path) }
-      it { should_not have_link('Sign in', href: signin_path) }
+      it { should have_signout_link }
+      it { should_not have_signin_link }
 
       describe "followed by sign out" do
         before { click_link "Sign out" }
-        it { should have_link('Sign in', href: signin_path) }
+        it { should have_signin_link }
       end
     end
   end
