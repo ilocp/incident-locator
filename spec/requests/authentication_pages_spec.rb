@@ -25,11 +25,7 @@ describe "Authentication" do
 
     describe "with valid credentials" do
       let(:user) { FactoryGirl.create(:user) }
-      before do
-        fill_in "Email", with: user.email
-        fill_in "Password", with: user.password
-        click_button submit
-      end
+      before { valid_signin(user) }
 
       it { should have_h1(user.name) }
       it { should have_link('Sign out', href: signout_path) }
