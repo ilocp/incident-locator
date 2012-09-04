@@ -14,12 +14,12 @@ describe "Authentication" do
         before { click_button submit }
 
         it { should have_h1('Sign in') }
-        it { should have_selector('div.alert-error', text: 'Invalid') }
+        it { should have_error_msg('Invalid') }
 
         describe "after leaving sign in page" do
           # todo: when we have a home page, point there
           before { visit users_path }
-          it { should_not have_selector('div.alert-error', text: 'Invalid') }
+          it { should_not have_error_msg('Invalid') }
         end
     end
 
