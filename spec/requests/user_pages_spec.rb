@@ -7,21 +7,21 @@ describe "User pages" do
   describe "signup page" do
     before { visit new_user_path }
 
-    it { should have_selector('h1', text: 'Sign up') }
+    it { should have_h1('Sign up') }
   end
 
 
   describe "users page" do
     before { visit users_path }
 
-    it { should have_selector('h1', text: 'All users') }
+    it { should have_h1('All users') }
   end
 
   describe "profile page" do
     let(:user) { FactoryGirl.create(:user) }
     before { visit user_path(user) }
 
-    it { should have_selector('h1', text: user.name) }
+    it { should have_h1(user.name) }
   end
 
   describe "signup" do
@@ -55,7 +55,7 @@ describe "User pages" do
         before { click_button submit }
         let(:user) { User.find_by_email('test@example.com') }
 
-        it { should have_selector('h1', text: user.name) }
+        it { should have_h1(user.name) }
         it { should have_link('Sign out', href: signout_path) }
       end
     end

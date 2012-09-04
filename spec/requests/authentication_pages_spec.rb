@@ -8,12 +8,12 @@ describe "Authentication" do
     before { visit signin_path }
     let(:submit) { "Sign in" }
 
-    it { should have_selector('h1', text: 'Sign in') }
+    it { should have_h1('Sign in') }
 
     describe "with invalid credentials" do
         before { click_button submit }
 
-        it { should have_selector('h1', text: 'Sign in') }
+        it { should have_h1('Sign in') }
         it { should have_selector('div.alert-error', text: 'Invalid') }
 
         describe "after leaving sign in page" do
@@ -31,7 +31,7 @@ describe "Authentication" do
         click_button submit
       end
 
-      it { should have_selector('h1', text: user.name) }
+      it { should have_h1(user.name) }
       it { should have_link('Sign out', href: signout_path) }
       it { should_not have_link('Sign in', href: signin_path) }
 
