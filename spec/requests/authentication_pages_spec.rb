@@ -40,4 +40,51 @@ describe "Authentication" do
       end
     end
   end
+
+  describe "authorization" do
+    let(:user) { FactoryGirl.create(:user) }
+
+    describe "before sign-in" do
+
+      describe "in Users controller" do
+
+        describe "visiting the edit page" do
+          before { visit edit_user_path(user) }
+          it { should have_h1('Sign in') }
+        end
+
+        describe "submitting to the update action" do
+          before { put user_path(user) }
+          specify { response.should redirect_to(signin_path) }
+        end
+      end
+    end
+
+    describe "after sign-in" do
+      before { signin user }
+      it { should have_h1(user.name) }
+
+      describe "in Users controller" do
+
+        describe "as wrong user" do
+          let(:wrong_user) { FactoryGirl.create(:user, email: "wrong@example.com") }
+
+          describe "visit the edit page" do
+            before { visit edit_user_path(wrong_user) }
+            it { should_not have_h1('Edit your profile') }
+            it { should have_signout_link }
+          end
+
+          describe "submitting to the update action" do
+            # Note: this isn't supported from all drivers
+            # direct http requests are not supported by capybara sessions
+            # this can be bypassed using cookies, eg:
+            # http://is.gd/lPZ34w
+            before { page.driver.put user_path(wrong_user) }
+            specify { page.driver.status_code.should_not == 200 }
+          end
+        end
+      end
+    end
+  end
 end
