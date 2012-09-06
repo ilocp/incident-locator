@@ -86,5 +86,40 @@ describe "Authentication" do
         end
       end
     end
+
+    describe "with proper redirects" do
+      # visiting the edit action while not logged in
+      # should prompt for login and then redirect to the
+      # edit action
+      describe "when attempting to visit a protected page" do
+        before do
+          visit edit_user_path(user)
+          sign_in user
+        end
+
+        describe "after sign-in" do
+          it "should redirect to the requested protected page" do
+            page.should have_h1('Edit your profile')
+            page.should have_signout_link
+          end
+
+          # the previous requested url should be removed from the session
+          # so a normal login action should redirect to the user profile
+          describe "when sign out and then sign in again" do
+            before do
+              click_link "Sign out"
+              visit signin_path
+              sign_in user
+            end
+
+            it "should redirect to user profile page" do
+              page.should have_h1(user.name)
+              page.should have_signout_link
+            end
+          end
+        end
+      end
+    end
+
   end
 end

@@ -17,7 +17,10 @@ module UsersHelper
   private
 
     def signed_in_user
-      redirect_to signin_path, notice: 'You need to sign in to access this page' unless signed_in?
+      unless signed_in?
+        store_location
+        redirect_to signin_path, notice: 'You need to sign in to access this page'
+      end
     end
 
     def correct_user
