@@ -4,13 +4,6 @@ describe "User pages" do
 
   subject { page }
 
-  describe "signup page" do
-    before { visit new_user_path }
-
-    it { should have_h1('Sign up') }
-  end
-
-
   describe "users page" do
     before { visit users_path }
 
@@ -27,6 +20,12 @@ describe "User pages" do
   describe "signup" do
     before { visit new_user_path }
     let (:submit) { "Create new account" }
+
+    describe "page" do
+      before { visit new_user_path }
+
+      it { should have_h1('Sign up') }
+    end
 
     describe "with invalid user data" do
       it "should not create a user" do
