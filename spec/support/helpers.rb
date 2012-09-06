@@ -1,5 +1,5 @@
 # sign in with valid credentials
-def signin(user)
+def sign_in(user)
   visit signin_path
   fill_in "Email", with: user.email
   fill_in "Password", with: user.password

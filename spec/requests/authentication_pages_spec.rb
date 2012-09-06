@@ -27,7 +27,7 @@ describe "Authentication" do
 
     describe "with valid credentials" do
       let(:user) { FactoryGirl.create(:user) }
-      before { signin(user) }
+      before { sign_in user }
 
       it { should have_h1(user.name) }
       it { should have_signout_link }
@@ -61,7 +61,7 @@ describe "Authentication" do
     end
 
     describe "after sign-in" do
-      before { signin user }
+      before { sign_in user }
       it { should have_h1(user.name) }
 
       describe "in Users controller" do
