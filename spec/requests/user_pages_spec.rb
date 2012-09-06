@@ -60,4 +60,36 @@ describe "User pages" do
     end
   end
 
+  describe "edit" do
+    let(:user) { FactoryGirl.create(:user) }
+    before { visit edit_user_path(user) }
+
+    describe "page" do
+      it { should have_h1('Edit your profile') }
+      it { should have_link('Change gravatar', href: 'http://gravatar.com/emails') }
+    end
+
+    describe "with invalid user data" do
+      before { click_button "Save changes" }
+
+      it { should have_selector('div#error_explanation') }
+    end
+
+    describe "with valid user data" do
+      let(:new_name) { "New awesome name" }
+      let(:new_email) { "new_email@example.com" }
+      let(:new_password) { "new_password" }
+      before do
+        fill_in "Name", with: new_name
+        fill_in "Email", with: new_email
+        fill_in "Password", with: new_password
+        fill_in "Confirmation", with: new_password
+        click_button "Save changes"
+      end
+
+      it { should have_success_msg('successfully') }
+      specify { user.reload.name.should == new_name }
+      specify { user.reload.email.should == new_email }
+    end
+  end
 end

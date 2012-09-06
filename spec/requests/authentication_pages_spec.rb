@@ -30,6 +30,7 @@ describe "Authentication" do
       it { should have_h1(user.name) }
       it { should have_signout_link }
       it { should_not have_signin_link }
+      it { should have_link('Settings', href: edit_user_path(user)) }
 
       describe "followed by sign out" do
         before { click_link "Sign out" }

@@ -1,5 +1,8 @@
-%h1 Editing user
+%h1 Edit your profile
 
+%div
+  = gravatar_for @user
+  = link_to "Change gravatar", 'http://gravatar.com/emails'
 = render 'form'
 
 = link_to 'Show', @user
