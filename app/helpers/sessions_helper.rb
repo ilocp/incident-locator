@@ -1,10 +1,5 @@
 module SessionsHelper
 
-  def current_user=(user)
-    # set the current user object
-    @current_user = user
-  end
-
   def current_user
     # find and return the current user object
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
@@ -24,5 +19,12 @@ module SessionsHelper
   def signed_in?
     ! self.current_user.nil?
   end
+
+  private
+
+    def current_user=(user)
+      # set the current user object
+      @current_user = user
+    end
 
 end
