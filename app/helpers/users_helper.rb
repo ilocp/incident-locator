@@ -20,4 +20,10 @@ module UsersHelper
       redirect_to signin_path, notice: 'You need to sign in to access this page' unless signed_in?
     end
 
+    def correct_user
+      @user = User.find(params[:id])
+      #todo: redirect to application root
+      redirect_to(users_path) unless current_user?(@user)
+    end
+
 end

@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_filter :signed_in_user, only: [:edit, :update]
+  before_filter :correct_user, only: [:edit, :update]
 
   # GET /users
   # GET /users.json
@@ -64,6 +65,10 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.update_attributes(params[:user])
         flash[:success] = 'User settings updated successfully'
+        # this updates session info for user
+        # this is important as the method `current_user` checks the user object
+        # not just the user `id`
+        sign_in @user
         format.html { redirect_to @user }
         format.json { head :no_content }
       else
