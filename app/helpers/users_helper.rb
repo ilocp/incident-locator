@@ -24,9 +24,9 @@ module UsersHelper
     end
 
     def correct_user
-      @user = User.find(params[:id])
+      user = User.find(params[:id])
       #todo: redirect to application root
-      redirect_to(users_path) unless current_user?(@user)
+      redirect_to(users_path) unless current_user?(user)
     end
 
 end
