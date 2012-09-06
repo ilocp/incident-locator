@@ -4,11 +4,13 @@ describe "Authentication" do
 
   subject { page }
 
-  describe "signin page" do
+  describe "signin" do
     before { visit signin_path }
     let(:submit) { "Sign in" }
 
-    it { should have_h1('Sign in') }
+    describe "page" do
+      it { should have_h1('Sign in') }
+    end
 
     describe "with invalid credentials" do
         before { click_button submit }
