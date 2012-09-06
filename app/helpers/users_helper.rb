@@ -14,4 +14,10 @@ module UsersHelper
     image_tag(url, alt: user.name, class: 'gravatar')
   end
 
+  private
+
+    def signed_in_user
+      redirect_to signin_path, notice: 'You need to sign in to access this page' unless signed_in?
+    end
+
 end
