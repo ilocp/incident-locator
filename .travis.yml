@@ -3,7 +3,9 @@ language: ruby
 rvm:
   - 1.9.3
 
-script: bundle exec rspec
+script: RAILS_ENV=test bundle exec rspec spec/
+
+env: DB=sqlite
 
 # build for branches:
 branches:
