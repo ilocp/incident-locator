@@ -1,12 +1,14 @@
-%header
-  -# logo goes here
-  %div Incident Locator
-  %nav
-    %ul
-      %li= link_to "Home", "#"
-      - if signed_in?
-        %li= link_to 'Settings', edit_user_path(current_user)
-        %li= link_to "Sign out", signout_path, method: "delete"
-      - else
-        %li= link_to "Sign in", signin_path
+.navbar.navbar-fixed-top.navbar-inverse
+  .navbar-inner
+    -# same as the main content area
+    .container-fluid
+      -# logo goes here (?)
+      = link_to "Incident Locator", "#", :class => "brand"
+      %nav.pull-right
+        %ul.nav
+          - if signed_in?
+            %li= link_to 'Settings', edit_user_path(current_user)
+            %li= link_to "Sign out", signout_path, method: "delete"
+          - else
+            %li= link_to "Sign in", signin_path
 

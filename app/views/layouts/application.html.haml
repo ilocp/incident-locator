@@ -10,11 +10,15 @@
   %body
     = render 'layouts/header'
 
-    .container
-      -# show all flash messages
-      - flash.each do |key, value|
-        %div{class: "alert-#{key}"}= value
+    .container-fluid
+      .row-fluid
+        .span2
+          -# sidebar goes here
+        .span10
+          -# show all flash messages
+          - flash.each do |key, value|
+            %div{class: "alert-#{key}"}= value
 
-      = yield
+          = yield
 
     = render 'layouts/footer'
