@@ -102,4 +102,19 @@ describe "User pages" do
       specify { user.reload.email.should == new_email }
     end
   end
+
+  describe "index" do
+    let(:user) { FactoryGirl.create(:user) }
+    before do
+      sign_in user
+      visit users_path
+    end
+
+    it { should have_h1('All users') }
+    it "should use list to show user" do
+      User.all.each do |user|
+        page.should have_selector('li', text: user.name)
+      end
+    end
+  end
 end
