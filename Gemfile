@@ -5,11 +5,13 @@ gem 'rails', '3.2.8'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'annotate', ">=2.5.0", group: :development
+group :development do
+  gem 'annotate', ">=2.5.0"
+  gem 'debugger'
+end
 
 group :development, :test do
   gem 'sqlite3'
-  gem 'debugger'
   gem 'rspec-rails'
   gem 'faker'
 end
@@ -17,6 +19,8 @@ end
 group :test do
     gem 'capybara'
     gem 'factory_girl_rails'
+    # rake is required by travis ci
+    gem 'rake'
 end
 
 group :production do
