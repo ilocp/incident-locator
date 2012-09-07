@@ -16,7 +16,7 @@
           -# later, when we have public pages we could use current_page?()
           -# to test for certain paths that we don't want the sidebar to
           -# show up
-          = render 'layouts/sidebar' if signed_in?
+          = render 'layouts/sidebar'
         .span10
           -# show all flash messages
           - flash.each do |key, value|
