@@ -15,4 +15,4 @@
     = f.label :password_confirmation, "Confirmation"
     = f.password_field :password_confirmation
   .actions
-    = f.submit @user.new_record? ? 'Create new account' : 'Save changes'
+    = f.submit @user.new_record? ? 'Create new account' : 'Save changes', class: "btn btn-success"
