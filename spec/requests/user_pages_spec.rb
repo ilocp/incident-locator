@@ -5,14 +5,21 @@ describe "User pages" do
   subject { page }
 
   describe "users page" do
-    before { visit users_path }
+    let(:user) { FactoryGirl.create(:user) }
+    before do
+      sign_in user
+      visit users_path
+    end
 
     it { should have_h1('All users') }
   end
 
   describe "profile page" do
     let(:user) { FactoryGirl.create(:user) }
-    before { visit user_path(user) }
+    before do
+      sign_in user
+      visit user_path(user)
+    end
 
     it { should have_h1(user.name) }
   end

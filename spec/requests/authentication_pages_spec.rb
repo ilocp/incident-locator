@@ -57,6 +57,11 @@ describe "Authentication" do
           before { put user_path(user) }
           specify { response.should redirect_to(signin_path) }
         end
+
+        describe "visiting the index page" do
+          before { visit users_path }
+          it { should have_h1('Sign in') }
+        end
       end
     end
 
