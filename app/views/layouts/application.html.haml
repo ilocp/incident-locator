@@ -13,7 +13,7 @@
     .container-fluid
       .row-fluid
         .span2
-          -# sidebar goes here
+          = render 'layouts/sidebar'
         .span10
           -# show all flash messages
           - flash.each do |key, value|
