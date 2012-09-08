@@ -30,6 +30,9 @@ describe User do
   it { should respond_to :password_digest }
   it { should respond_to :authenticate }
 
+  # associations
+  it { should respond_to :reports }
+
   it { should be_valid }
 
   describe "when name is blank" do
