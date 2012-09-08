@@ -1,0 +1,6 @@
+- if @user.errors.any?
+  #error_explanation
+    %div= "#{pluralize(@user.errors.count, "error")} found"
+    %ul
+      - @user.errors.full_messages.each do |msg|
+        %li= msg

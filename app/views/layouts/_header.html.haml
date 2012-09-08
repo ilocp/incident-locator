@@ -1,0 +1,30 @@
+.navbar.navbar-fixed-top.navbar-inverse
+  .navbar-inner
+    -# same as the main content area
+    .container-fluid
+      -# logo goes here (?)
+      = link_to "Incident Locator", "#", :class => "brand"
+      %ul.nav.pull-right
+        - if signed_in?
+          %li.dropdown
+            =link_to "#", :class => "dropdown-toggle", "data-toggle" => "dropdown" do
+              = gravatar_for current_user, size: 24
+              = current_user.name
+              %b.caret
+            %ul.dropdown-menu
+              %li
+                = link_to user_path(current_user) do
+                  %i.icon-user
+                  = 'Profile'
+              %li
+                = link_to edit_user_path(current_user) do
+                  %i.icon-wrench
+                  = 'Settings'
+              %li.divider
+              %li
+                = link_to signout_path, method: "delete" do
+                  %i.icon-off
+                  = 'Sign out'
+        - else
+          %li= link_to "Sign in", signin_path
+

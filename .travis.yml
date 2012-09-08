@@ -1,0 +1,14 @@
+language: ruby
+
+rvm:
+  - 1.9.3
+env: DB=sqlite
+before_script:
+  - bundle exec rake db:migrate db:test:prepare
+script: RAILS_ENV=test bundle exec rspec spec
+
+# build for branches:
+branches:
+  only:
+    - master
+    - development

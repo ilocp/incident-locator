@@ -1,13 +1,26 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.7'
+gem 'rails', '3.2.8'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
+group :development do
+  gem 'annotate', ">=2.5.0"
+  gem 'debugger'
+end
+
 group :development, :test do
   gem 'sqlite3'
-  gem 'debugger'
+  gem 'rspec-rails'
+  gem 'faker'
+end
+
+group :test do
+    gem 'capybara'
+    gem 'factory_girl_rails'
+    # rake is required by travis ci
+    gem 'rake'
 end
 
 group :production do
@@ -24,7 +37,9 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
+gem 'haml-rails'
 gem 'jquery-rails'
+gem 'bootstrap-sass', '~> 2.1.0.0'
 
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0.0'

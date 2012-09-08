@@ -1,0 +1,117 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id              :integer          not null, primary key
+#  email           :string(255)
+#  password_digest :string(255)
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  name            :string(255)
+#
+# Indexes
+#
+#  index_users_on_email  (email) UNIQUE
+#
+
+require 'spec_helper'
+
+describe User do
+
+  before { @user = User.new(name: "Tets User", email: "test@example.com",
+                            password: "foobar", password_confirmation: "foobar") }
+
+  subject { @user }
+
+  it { should respond_to :name }
+  it { should respond_to :email }
+  it { should respond_to :password }
+  it { should respond_to :password_confirmation }
+  it { should respond_to :password_digest }
+  it { should respond_to :authenticate }
+
+  # associations
+  it { should respond_to :reports }
+
+  it { should be_valid }
+
+  describe "when name is blank" do
+    before { @user.name = '' }
+    it { should_not be_valid }
+  end
+
+  describe "when name is too long" do
+    before { @user.name = 'a' * 51 }
+    it { should_not be_valid }
+  end
+
+  describe "when email is blank" do
+    before { @user.email = '' }
+    it { should_not be_valid }
+  end
+
+  describe "when email format is valid" do
+    it "should be valid" do
+      valid_addresses = %w(zomg@foo.com zomg-123@foo.com z_Omg@co.foo.com z+omg@foo.com)
+      valid_addresses.each do |valid_address|
+        @user.email = valid_address
+        @user.should be_valid
+      end
+    end
+  end
+
+  describe "when email format is not valid" do
+    it "should not be valid" do
+      invalid_addresses = %w(zomg@foo,com zomg123_at_foo.com z_Omg\ co.foo.com zomg@foo.)
+      invalid_addresses.each do |invalid_address|
+        @user.email = invalid_address
+        @user.should_not be_valid
+      end
+    end
+  end
+
+  describe "when email is already taken" do
+    before do
+      # emulate a user already in the database with the same email
+      user_already_on_db = @user.dup
+      # set address to upcase to test for case sensitivity
+      user_already_on_db.email = @user.email.upcase
+      user_already_on_db.save
+    end
+    it { should_not be_valid }
+  end
+
+  describe "when password is blank" do
+    before { @user.password = @user.password_confirmation = '' }
+    it { should_not be_valid }
+  end
+
+  describe "when passwords do not match" do
+    before { @user.password_confirmation = 'something_different' }
+    it { should_not be_valid }
+  end
+
+  describe "when password is too short" do
+    before { @user.password = @user.password_confirmation = 'a' * 5 }
+    it { should_not be_valid }
+  end
+
+  describe "authentication" do
+    before { @user.save }
+    let (:retrieved_user) { User.find_by_email(@user.email) }
+
+    describe "when password is correct" do
+      it { should == retrieved_user.authenticate(@user.password) }
+    end
+
+    describe "when passwowrd is not correct" do
+      # we use this user object more than once
+      let(:user_with_invalid_password) { retrieved_user.authenticate("invalid") }
+
+      it { should_not == user_with_invalid_password }
+      it { user_with_invalid_password.should be_false }
+    end
+  end
+
+end
+
