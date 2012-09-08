@@ -20,6 +20,8 @@ class User < ActiveRecord::Base
 
   attr_accessible :name, :email, :password, :password_confirmation
 
+  has_many :reports
+
   # we need to be consistent as we use an index on email column
   before_save { |user| user.email = email.downcase }
 
