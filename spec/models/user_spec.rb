@@ -113,5 +113,31 @@ describe User do
     end
   end
 
+  describe "report associations" do
+
+    # we want to return user reports in reverse chronological order
+    # in user profiles
+    before { @user.save }
+    let!(:old_report) do
+      FactoryGirl.create(:report, user: @user, created_at: 1.day.ago)
+    end
+
+    let!(:new_report) do
+      FactoryGirl.create(:report, user: @user, created_at: 1.hour.ago)
+    end
+
+    it "should return newer report first" do
+      @user.reports.should == [new_report, old_report]
+    end
+
+    # remove reports when deleting user
+    it "should destroy associated reports" do
+      reports = @user.reports
+      @user.destroy
+      reports.each do |report|
+        Report.find_by_id(report.id).should be_nil
+      end
+    end
+  end
 end
 

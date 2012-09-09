@@ -29,4 +29,6 @@ class Report < ActiveRecord::Base
   validates :longitude, presence: true, inclusion: { in: COORDINATES_RANGE }
   validates :heading, presence: true, numericality: { only_integer: true },
             inclusion: { in: HEADING_RANGE }
+
+  default_scope order: 'reports.created_at DESC'
 end
