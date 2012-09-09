@@ -1,8 +1,5 @@
 %h1= @user.name
 %div= gravatar_for @user
-
-%p
+%div
   %b Email:
   = @user.email
-
-= link_to 'Back', users_path
