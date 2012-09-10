@@ -20,10 +20,6 @@ module SessionsHelper
     ! self.current_user.nil?
   end
 
-  def store_location
-    session[:return_to] = request.url
-  end
-
   def redirect_back_or(default_url)
     redirect_to(session[:return_to] || default_url)
     session.delete(:return_to)
@@ -38,6 +34,23 @@ module SessionsHelper
 
     def current_user?(user)
       user == current_user
+    end
+
+    def signed_in_user
+      unless signed_in?
+        store_location
+        redirect_to signin_path, notice: 'You need to sign in to access this page'
+      end
+    end
+
+    def correct_user
+      user = User.find(params[:id])
+      #todo: redirect to application root
+      redirect_to(users_path) unless current_user?(user)
+    end
+
+    def store_location
+      session[:return_to] = request.url
     end
 
 end

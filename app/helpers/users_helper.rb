@@ -14,19 +14,4 @@ module UsersHelper
     image_tag(url, alt: user.name, class: 'gravatar')
   end
 
-  private
-
-    def signed_in_user
-      unless signed_in?
-        store_location
-        redirect_to signin_path, notice: 'You need to sign in to access this page'
-      end
-    end
-
-    def correct_user
-      user = User.find(params[:id])
-      #todo: redirect to application root
-      redirect_to(users_path) unless current_user?(user)
-    end
-
 end
