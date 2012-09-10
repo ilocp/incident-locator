@@ -63,6 +63,14 @@ describe "Authentication" do
           it { should have_h1('Sign in') }
         end
       end
+
+      describe "in Reports controller" do
+
+        describe "submiting new report" do
+          before { post reports_path }
+          specify { response.should redirect_to(signin_path) }
+        end
+      end
     end
 
     describe "after sign-in" do

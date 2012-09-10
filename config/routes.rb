@@ -6,6 +6,9 @@ IncidentLocator::Application.routes.draw do
   match 'signin' => 'sessions#new', :via => :get
   match 'signout' => 'sessions#destroy', :via => :delete
 
+  # reports
+  resources :reports, only: [:new, :create]
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

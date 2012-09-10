@@ -1,0 +1,15 @@
+= form_for @report do |f|
+
+  = render 'shared/error_messages', object: f.object
+
+  .field
+    = f.label :latitude
+    = f.text_field :latitude
+  .field
+    = f.label :longitude
+    = f.text_field :longitude
+  .field
+    = f.label :heading
+    = f.text_field :heading
+  .actions
+    = f.submit 'Create report', class: 'btn btn-success'
