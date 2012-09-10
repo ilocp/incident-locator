@@ -21,6 +21,8 @@ class Report < ActiveRecord::Base
 
   belongs_to :user
 
+  before_save :round_coordinates
+
   LAT_RANGE = -90..90
   LNG_RANGE = -180..180
   HEADING_RANGE = 0..360
@@ -32,4 +34,12 @@ class Report < ActiveRecord::Base
             inclusion: { in: HEADING_RANGE }
 
   default_scope order: 'reports.created_at DESC'
+
+  private
+
+    def round_coordinates
+      # round lat/lng to 7 decimal digits (cm precision)
+      self.latitude = self.latitude.round(7)
+      self.longitude = self.longitude.round(7)
+    end
 end

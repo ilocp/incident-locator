@@ -98,4 +98,18 @@ describe Report do
       end
     end
   end
+
+  describe "with valid location" do
+    before do
+      @new_report = @report.dup
+      @new_report.latitude = 1.12345678
+      @new_report.longitude = 1.12345678
+      @new_report.save
+    end
+
+    describe "should have 7 or less decimal digits in coordinates" do
+      it { @new_report.latitude.should == @new_report.latitude.round(7) }
+      it { @new_report.longitude.should == @new_report.longitude.round(7) }
+    end
+  end
 end
