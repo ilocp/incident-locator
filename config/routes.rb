@@ -2,9 +2,9 @@ IncidentLocator::Application.routes.draw do
   resources :users
 
   # log{in,out}
+  resources :sessions, only: [:create]
   match 'signin' => 'sessions#new', :via => :get
   match 'signout' => 'sessions#destroy', :via => :delete
-  match 'sessions' => 'sessions#create', :via => :post
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
