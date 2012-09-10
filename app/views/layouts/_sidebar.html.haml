@@ -11,6 +11,10 @@
         = 'Incidents'
     %li.divider
     %li
-      = link_to '#' do
+      = link_to user_path(current_user) do
         %i.icon-chevron-right
         = 'My reports'
+    %li
+      = link_to new_report_path do
+        %i.icon-chevron-right
+        = 'Report from the web'
