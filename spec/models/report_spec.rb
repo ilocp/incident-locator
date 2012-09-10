@@ -67,11 +67,11 @@ describe Report do
   end
 
   describe "with invalid location" do
-    let(:invalid_coordinates) { [181.0, -181.0] }
 
     describe "latitude" do
       it "should not be valid" do
-        invalid_coordinates.each do |lat|
+        invalid_lat = [ 91.0, -91.0, 90.1, -90.1 ]
+        invalid_lat.each do |lat|
           @report.latitude = lat
           @report.should_not be_valid
         end
@@ -80,7 +80,8 @@ describe Report do
 
     describe "longitude" do
       it "should not be valid" do
-        invalid_coordinates.each do |lng|
+        invalid_lng = [ 181.0, -181.0, 180.1 ]
+        invalid_lng.each do |lng|
           @report.longitude = lng
           @report.should_not be_valid
         end

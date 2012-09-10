@@ -21,12 +21,13 @@ class Report < ActiveRecord::Base
 
   belongs_to :user
 
-  COORDINATES_RANGE = -180..180
+  LAT_RANGE = -90..90
+  LNG_RANGE = -180..180
   HEADING_RANGE = 0..360
 
   validates :user_id, presence: true
-  validates :latitude, presence: true, inclusion: { in: COORDINATES_RANGE }
-  validates :longitude, presence: true, inclusion: { in: COORDINATES_RANGE }
+  validates :latitude, presence: true, inclusion: { in: LAT_RANGE }
+  validates :longitude, presence: true, inclusion: { in: LNG_RANGE }
   validates :heading, presence: true, numericality: { only_integer: true },
             inclusion: { in: HEADING_RANGE }
 
