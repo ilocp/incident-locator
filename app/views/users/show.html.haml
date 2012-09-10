@@ -16,10 +16,4 @@
         %th= 'Longitude'
         %th= 'Heading'
     %tbody
-      - @user.reports.each do |report|
-        %tr
-          %td= report.latitude
-          %td= report.longitude
-          %td= "#{report.heading}°"
-
-
+      = render @reports
