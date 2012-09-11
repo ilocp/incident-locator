@@ -1,0 +1,11 @@
+%h1= 'Incidents'
+.incidents
+  %table.table.table-striped.table-bordered
+    -#%caption 'List of all incident reports made by user'
+    %thead
+      %tr
+        %th= 'Latitude'
+        %th= 'Longitude'
+        %th= 'Radius'
+    %tbody
+      = render @incidents
