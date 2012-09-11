@@ -11,7 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120908090102) do
+ActiveRecord::Schema.define(:version => 20120911091731) do
+
+  create_table "incidents", :force => true do |t|
+    t.float    "latitude"
+    t.float    "longitude"
+    t.float    "radius"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "reports", :force => true do |t|
     t.integer  "user_id"

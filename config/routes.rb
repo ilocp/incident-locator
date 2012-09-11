@@ -9,6 +9,9 @@ IncidentLocator::Application.routes.draw do
   # reports
   resources :reports, only: [:new, :create]
 
+  # incidents
+  resources :incidents, only: [:index]
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
