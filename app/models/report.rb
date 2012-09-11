@@ -28,10 +28,13 @@ class Report < ActiveRecord::Base
   HEADING_RANGE = 0..360
 
   validates :user_id, presence: true
-  validates :latitude, presence: true, inclusion: { in: LAT_RANGE }
-  validates :longitude, presence: true, inclusion: { in: LNG_RANGE }
-  validates :heading, presence: true, numericality: { only_integer: true },
-            inclusion: { in: HEADING_RANGE }
+  validates :latitude, presence: true, inclusion: { in: LAT_RANGE,
+            message: "values must be between -90 and 90" }
+  validates :longitude, presence: true, inclusion: { in: LNG_RANGE,
+            message: "values must be between -180 and 180" }
+  validates :heading, presence: true,
+            numericality: { only_integer: true, message: "must be an integer value" },
+            inclusion: { in: HEADING_RANGE, message: "values must be between 0 and 369" }
 
   default_scope order: 'reports.created_at DESC'
 
