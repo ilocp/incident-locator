@@ -70,7 +70,7 @@ describe Report do
 
     describe "latitude" do
       it "should not be valid" do
-        invalid_lat = [ 91.0, -91.0, 90.1, -90.1 ]
+        invalid_lat = [ 91.0, -91.0, 90.1, -90.1, 'foo' ]
         invalid_lat.each do |lat|
           @report.latitude = lat
           @report.should_not be_valid
@@ -80,7 +80,7 @@ describe Report do
 
     describe "longitude" do
       it "should not be valid" do
-        invalid_lng = [ 181.0, -181.0, 180.1 ]
+        invalid_lng = [ 181.0, -181.0, 180.1, 'foo' ]
         invalid_lng.each do |lng|
           @report.longitude = lng
           @report.should_not be_valid
@@ -90,7 +90,7 @@ describe Report do
 
     describe "heading" do
       it "should not be valid" do
-        invalid_headings = [ -1, 361, 150.5 ]
+        invalid_headings = [ -1, 361, 150.5, 'foo' ]
         invalid_headings.each do |heading|
           @report.heading = heading
           @report.should_not be_valid
