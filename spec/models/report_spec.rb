@@ -20,6 +20,7 @@ require 'spec_helper'
 
 describe Report do
   let(:user) { FactoryGirl.create(:user) }
+  let(:incident) { FactoryGirl.create(:incident) }
   before { @report = user.reports.build(latitude: 10.123456, longitude: 10.123456,
                                        heading: 200) }
   subject { @report }
@@ -40,6 +41,12 @@ describe Report do
     it "should not allow access to user_id" do
       expect do
         Report.new(user_id: user.id)
+      end.to raise_error ActiveModel::MassAssignmentSecurity::Error
+    end
+
+    it "should not allow access to report_id" do
+      expect do
+        Report.new(incident_id: incident.id)
       end.to raise_error ActiveModel::MassAssignmentSecurity::Error
     end
   end
