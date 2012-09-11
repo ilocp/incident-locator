@@ -43,12 +43,6 @@ module SessionsHelper
       end
     end
 
-    def correct_user
-      user = User.find(params[:id])
-      #todo: redirect to application root
-      redirect_to(users_path) unless current_user?(user)
-    end
-
     def store_location
       session[:return_to] = request.url
     end
