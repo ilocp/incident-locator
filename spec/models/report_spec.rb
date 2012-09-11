@@ -31,6 +31,7 @@ describe Report do
   it { should respond_to :incident_id }
 
   it { should respond_to :user }
+  it { should respond_to :incident }
   its(:user) { should == user }
 
   it { should be_valid }

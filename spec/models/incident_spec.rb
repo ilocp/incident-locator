@@ -21,6 +21,8 @@ describe Incident do
   it { should respond_to :longitude }
   it { should respond_to :radius }
 
+  it { should respond_to :reports }
+
   it { should be_valid }
 
   describe "with empty location" do

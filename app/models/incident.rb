@@ -13,6 +13,8 @@
 class Incident < ActiveRecord::Base
   attr_accessible :longitude, :latitude, :radius
 
+  has_many :reports
+
   LAT_RANGE = -90..90
   LNG_RANGE = -180..180
 

@@ -20,6 +20,7 @@ class Report < ActiveRecord::Base
   attr_accessible :latitude, :longitude, :heading
 
   belongs_to :user
+  belongs_to :incident
 
   before_save :round_coordinates
 
