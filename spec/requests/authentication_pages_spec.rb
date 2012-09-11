@@ -71,6 +71,15 @@ describe "Authentication" do
           specify { response.should redirect_to(signin_path) }
         end
       end
+
+      describe "in Incidents controller" do
+
+        describe "visiting incident index page" do
+          before { visit incidents_path }
+          it { should have_h1('Sign in') }
+          it { should have_notice_msg('sign in') }
+        end
+      end
     end
 
     describe "after sign-in" do
