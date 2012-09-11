@@ -15,11 +15,8 @@ class Incident < ActiveRecord::Base
 
   has_many :reports
 
-  LAT_RANGE = -90..90
-  LNG_RANGE = -180..180
-
-  validates :latitude, presence: true, numericality: true, inclusion: { in: LAT_RANGE }
-  validates :longitude, presence: true, numericality: true, inclusion: { in: LNG_RANGE }
+  validates :latitude, presence: true, numericality: true, latitude: true
+  validates :longitude, presence: true, numericality: true, longitude: true
   validates :radius, presence: true, numericality: { greater_than: 0 }
 
 end

@@ -24,18 +24,11 @@ class Report < ActiveRecord::Base
 
   before_save :round_coordinates
 
-  LAT_RANGE = -90..90
-  LNG_RANGE = -180..180
-  HEADING_RANGE = 0..360
-
   validates :user_id, presence: true
-  validates :latitude, presence: true, numericality: true,
-            inclusion: { in: LAT_RANGE, message: "values must be between -90 and 90" }
-  validates :longitude, presence: true, numericality: true,
-            inclusion: { in: LNG_RANGE, message: "values must be between -180 and 180" }
-  validates :heading, presence: true,
-            numericality: { only_integer: true, message: "must be an integer value" },
-            inclusion: { in: HEADING_RANGE, message: "values must be between 0 and 369" }
+  validates :latitude, presence: true, numericality: true, latitude: true
+  validates :longitude, presence: true, numericality: true, longitude: true
+  validates :heading, presence: true, heading: true,
+            numericality: { only_integer: true, message: "must be an integer value" }
 
   default_scope order: 'reports.created_at DESC'
 
