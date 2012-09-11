@@ -1,6 +1,7 @@
 - if object.errors.any?
   #error_explanation
-    %div= "#{pluralize(object.errors.count, "error")} found"
+    .alert.alert-error
+      = "#{pluralize(object.errors.count, "error")} found"
     %ul
       - object.errors.full_messages.each do |msg|
         %li= msg
