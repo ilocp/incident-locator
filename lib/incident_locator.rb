@@ -190,3 +190,15 @@ end
 #p3 = Location.new(37.973572, 23.66798)
 #p4 = perpendicular_point(p1, p2, p3)
 #puts "#{p4.lat}, #{p4.lng}"
+
+def midpoint(p1, p2)
+  lat1 = p1.lat.to_rad
+  lng1 = p1.lng.to_rad
+  lat2 = p2.lat.to_rad
+  lng2 = p2.lng.to_rad
+
+  new_lat = (lat1 + lat2) / 2
+  new_lng = (lng1 + lng2) / 2
+
+  Location.new(new_lat.to_degrees, new_lng.to_degrees)
+end
