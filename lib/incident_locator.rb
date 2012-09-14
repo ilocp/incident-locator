@@ -155,6 +155,6 @@ def destination_point(p, distance=1500)
   Location.new(new_lat.to_degrees, new_lng.to_degrees)
 end
 
-#p = Location.new(37.982638,23.67558,180)
+#p = Location.new(37.982593, 23.675639, 180)
 #p_new = destination_point(p)
 #puts "#{p_new.lat}, #{p_new.lng}"
