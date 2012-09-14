@@ -133,3 +133,27 @@ end
 # p1 = Location.new(37.982638,23.67558,180)
 # p2 = Location.new(37.97541,23.655324,90)
 # p3 = points_intersection(p1, p2)
+
+
+##
+# Given a point p, heading in degrees for this point and a
+# maximum distance in meters, calculate a destination point
+
+def destination_point(p, distance=1500)
+  lat = p.lat.to_rad
+  lng = p.lng.to_rad
+  h = p.heading.to_rad
+  angular_distance = (distance / R).to_rad
+
+  new_lat = Math.asin(Math.sin(lat) * Math.cos(angular_distance) +
+                      Math.cos(lat) * Math.sin(angular_distance) * Math.cos(h))
+
+  new_lng = lng + Math.atan2(Math.sin(h) * Math.sin(angular_distance) * Math.cos(lat),
+                             Math.cos(angular_distance) - Math.sin(lat) * Math.sin(new_lat))
+
+  Location.new(new_lat.to_degrees, new_lng.to_degrees)
+end
+
+#p = Location.new(37.982638,23.67558,180)
+#p_new = destination_point(p)
+#puts "#{p_new.lat}, #{p_new.lng}"
