@@ -143,7 +143,8 @@ def destination_point(p, distance=1500)
   lat = p.lat.to_rad
   lng = p.lng.to_rad
   h = p.heading.to_rad
-  angular_distance = (distance / R).to_rad
+
+  angular_distance = distance.to_f / R
 
   new_lat = Math.asin(Math.sin(lat) * Math.cos(angular_distance) +
                       Math.cos(lat) * Math.sin(angular_distance) * Math.cos(h))
