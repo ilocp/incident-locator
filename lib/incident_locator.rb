@@ -4,11 +4,11 @@
 
 class Numeric
   def to_rad
-    (self / 180) * Math::PI
+    self / 180.0 * Math::PI
   end
 
   def to_degrees
-    self * 180 / Math::PI
+    self * 180.0 / Math::PI
   end
 end
 
