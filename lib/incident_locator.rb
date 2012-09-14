@@ -97,6 +97,8 @@ def points_intersection(p1, p2)
   alpha1 = (h1 - h12 + Math::PI) % (2 * Math::PI) - Math::PI
   alpha2 = (h21 - h2 + Math::PI) % (2 * Math::PI) - Math::PI
 
+  alpha1 = alpha1.abs
+  alpha2 = alpha2.abs
 
   # infinite intersections
   if Math.sin(alpha1) == 0 and Math.sin(alpha2) == 0
