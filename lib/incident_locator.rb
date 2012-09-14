@@ -23,8 +23,9 @@ class Location
 end
 
 
-# earth's radius in meters
-R = 6371000
+# earth's radius in meters, same value used in gmaps
+# https://developers.google.com/maps/documentation/javascript/reference#spherical
+R = 6378137
 
 
 ##
