@@ -158,3 +158,33 @@ end
 #p = Location.new(37.982593, 23.675639, 180)
 #p_new = destination_point(p)
 #puts "#{p_new.lat}, #{p_new.lng}"
+
+
+##
+# Given 3 points p1, p2, p3 calculate a fourth point p4
+# on the line l1 defined from points p1 and p2, such as
+# assuming a second line l2 passing from p4 and p3,
+# is perpendicular to l1
+
+def perpendicular_point(p1, p2, p3)
+  lat1 = p1.lat.to_rad
+  lng1 = p1.lng.to_rad
+  lat2 = p2.lat.to_rad
+  lng2 = p2.lng.to_rad
+  lat3 = p3.lat.to_rad
+  lng3 = p3.lng.to_rad
+
+  minimum_distance = ((lat3 - lat1) * (lat2 - lat1) + (lng3 - lng1) * (lng2 - lng1)) /
+                     ((lat2 - lat1) * (lat2 - lat1) + (lng2 - lng1) * (lng2 - lng1))
+
+  lat4 = lat1 + minimum_distance * (lat2 - lat1)
+  lng4 = lng1 + minimum_distance * (lng2 - lng1)
+
+  Location.new(lat4.to_degrees, lng4.to_degrees)
+end
+
+#p1 = Location.new(37.982638, 23.67558)
+#p2 = Location.new(37.969118, 23.67558)
+#p3 = Location.new(37.973572, 23.66798)
+#p4 = perpendicular_point(p1, p2, p3)
+#puts "#{p4.lat}, #{p4.lng}"
