@@ -75,12 +75,12 @@ def points_intersection(p1, p2)
   # initial/final heading between points
   h_init = Math.acos(
     (Math.sin(lat2) - Math.sin(lat1) * Math.cos(distance)) /
-    Math.sin(distance) * Math.cos(lat1)
+    (Math.sin(distance) * Math.cos(lat1))
   )
 
   h_final = Math.acos(
     (Math.sin(lat1) - Math.sin(lat2) * Math.cos(distance)) /
-    Math.sin(distance) * Math.cos(lat2)
+    (Math.sin(distance) * Math.cos(lat2))
   )
 
   if Math.sin(lng2 - lng1) > 0
@@ -94,9 +94,9 @@ def points_intersection(p1, p2)
   # calculate angles
   # alpha1 -> angle 2-1-3
   # alpha2 -> angle 1-2-3
+  alpha1 = (h1 - h12 + Math::PI) % (2 * Math::PI) - Math::PI
+  alpha2 = (h21 - h2 + Math::PI) % (2 * Math::PI) - Math::PI
 
-  alpha1 = (h1 - h12 + Math::PI) % ((2 * Math::PI) - Math::PI)
-  alpha2 = (h21 - h2 + Math::PI) % ((2 * Math::PI) - Math::PI)
 
   # infinite intersections
   if Math.sin(alpha1) == 0 and Math.sin(alpha2) == 0
