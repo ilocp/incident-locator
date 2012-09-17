@@ -3,6 +3,7 @@ class ReportsController < ApplicationController
 
   def new
     @report = current_user.reports.build
+    #@foo = Geoincident::test
   end
 
   def create
