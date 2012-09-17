@@ -2,7 +2,7 @@
 # some initial support functions / classes
 #
 
-class Numeric
+Numeric.class_eval do
   def to_rad
     self / 180.0 * Math::PI
   end
