@@ -1,10 +1,10 @@
 module Geoincident
 
+  extend self
+
   # earth's radius in meters, same value used in gmaps
   # https://developers.google.com/maps/documentation/javascript/reference#spherical
   R = 6378137
-
-  private
 
   ##
   # Uses the haversine formula to calculate the distance between 2 points.
