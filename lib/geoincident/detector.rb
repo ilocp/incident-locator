@@ -39,15 +39,15 @@ module Geoincident
 
         p2 = Location.new(report.latitude, report.longitude, report.heading)
 
-        cross_point = Geoincident::points_intersection(p1, p2)
+        cross_point = Geoincident::Trig.points_intersection(p1, p2)
 
         if cross_point.nil?
           next
         end
 
         # calculate distances
-        d1 = Geoincident::location_distance(p1, cross_point)
-        d2 = Geoincident::location_distance(p2, cross_point)
+        d1 = Geoincident::Trig.location_distance(p1, cross_point)
+        d2 = Geoincident::Trig.location_distance(p2, cross_point)
 
         # if distances are inside visibility radius we have a new incident
         if d1 <= VISIBILITY_RADIUS and d2 <= VISIBILITY_RADIUS
