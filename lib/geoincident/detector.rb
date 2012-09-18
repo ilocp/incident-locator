@@ -1,5 +1,6 @@
 module Geoincident
 
+  require 'geoincident/constants'
   require 'geoincident/helper/classes'
   require 'geoincident/helper/trig'
 
@@ -49,11 +50,11 @@ module Geoincident
         d2 = Geoincident::location_distance(p2, cross_point)
 
         # if distances are inside visibility radius we have a new incident
-        v_distance = 1500
-        if d1 <= v_distance and d2 <= v_distance
+        if d1 <= VISIBILITY_RADIUS and d2 <= VISIBILITY_RADIUS
+
           # set a default radius for the incident
-          # TODO make configurable
-          incident_data = { latitude: cross_point.lat, longitude: cross_point.lng, radius: 3000 }
+          incident_data = { latitude: cross_point.lat, longitude: cross_point.lng,
+                            radius: INCIDENT_RADIUS }
           incident = Incident.new(incident_data)
           incident.save
 
