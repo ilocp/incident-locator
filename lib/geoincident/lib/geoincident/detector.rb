@@ -22,39 +22,43 @@ module Geoincident
     def detect_new_incident
       orphans = get_orphan_reports
 
-      # TODO try to remove location object requirement
-      p1 = Location.new(@reference_report.latitude, @reference_report.longitude,
-                        @reference_report.heading)
-
       incident = nil
       orphans.each do |report|
         # iterate each report not assigned to an incident
         # and calculate the intersections
 
-        # TODO: modify trig code to avoid creating location objects
-        # Note: this is test code that may blow up
         if report.id == @reference_report.id
           next
         end
 
-        p2 = Location.new(report.latitude, report.longitude, report.heading)
-
-        cross_point = Trig.points_intersection(p1, p2)
+        cross_point = Trig.points_intersection(@reference_report.latitude.to_rad,
+                                               @reference_report.longitude.to_rad,
+                                               @reference_report.heading.to_rad,
+                                               report.latitude.to_rad,
+                                               report.longitude.to_rad,
+                                               report.heading.to_rad)
 
         if cross_point.nil?
           next
         end
 
         # calculate distances
-        d1 = Trig.location_distance(p1, cross_point)
-        d2 = Trig.location_distance(p2, cross_point)
+        d1 = Trig.location_distance(@reference_point.latitude.to_rad,
+                                    @reference_point.longitude.to_rad,
+                                    cross_point[:lat], cross_point[:lng])
+
+        d2 = Trig.location_distance(report.latitude.to_rad,
+                                    report.longitude.to_rad,
+                                    cross_point[:lat], cross_point[:lng])
 
         # if distances are inside visibility radius we have a new incident
         if d1 <= VISIBILITY_RADIUS and d2 <= VISIBILITY_RADIUS
 
           # set a default radius for the incident
-          incident_data = { latitude: cross_point.lat, longitude: cross_point.lng,
+          incident_data = { latitude: cross_point[:lat].to_degrees,
+                            longitude: cross_point[:lng].to_degrees,
                             radius: INCIDENT_RADIUS }
+
           incident = Incident.new(incident_data)
           incident.save
 
