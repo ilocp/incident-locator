@@ -80,13 +80,11 @@ module Geoincident
 
     private
 
-    def get_orphan_reports
-      # Maybe use time constraints to limit reports?
-      # Eg something like:
-      #   Report.where(incident_id: nil, created_at: 2.days.ago...Time.now)
-
-      Report.where(:incident_id => nil)
-
+    def get_orphan_reports(date_range=nil)
+      # Return all orphan reports, namely all records with nil incident_id
+      # by default all reports created/updated 2 days ago are considered
+      date_range ||= 2.days.ago...Time.now
+      Report.where(incident_id: nil, updated_at: date_range)
     end
   end
 end
