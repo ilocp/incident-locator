@@ -1,3 +1,17 @@
+#
+# Helper trigonometric functions
+#
+# All values accepted by these functions must be in radians.
+# Caller functions must format the input/output values accordingly to
+# radians / degrees.
+#
+# Some functions return location points. These points are represented as
+# hashes with keys: `lat` and `lng` and the values are in radians.
+# Eg:
+#   { lat: 90.244561, lng: 46.329010 }
+#
+# Returned values that represent distances are in meters.
+
 module Geoincident
   module Trig
 
@@ -9,14 +23,11 @@ module Geoincident
 
     ##
     # Uses the haversine formula to calculate the distance between 2 points.
-    # The points must respond to lat and lng in decimal degrees.
     #
     # Returns the distance in meters
-    def location_distance(p1, p2)
-      dLat = (p2.lat - p1.lat).to_rad
-      dLng = (p2.lng - p1.lng).to_rad
-      lat1 = p1.lat.to_rad
-      lat2 = p2.lat.to_rad
+    def location_distance(lat1, lng1, lat2, lng2)
+      dLat = lat2 - lat1
+      dLng = lng2 - lng1
 
       a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
         Math.sin(dLng / 2) * Math.sin(dLng / 2) * Math.cos(lat1) * Math.cos(lat2)
@@ -30,15 +41,9 @@ module Geoincident
     # Given 2 points p1 and p2, and 2 headings for these points,
     # calculate a third point p3 where the extension lines for
     # these points intersect.
-    def points_intersection(p1, p2)
-      lat1 = p1.lat.to_rad
-      lng1 = p1.lng.to_rad
-      h1 = p1.heading.to_rad
-
-      lat2 = p2.lat.to_rad
-      lng2 = p2.lng.to_rad
-      h2 = p2.heading.to_rad
-
+    #
+    # return point as hash with keys: lat, lng
+    def points_intersection(lat1, lng1, h1, lat2, lng2, h2)
       dLat = lat2 - lat1
       dLng = lng2 - lng1
 
@@ -104,7 +109,7 @@ module Geoincident
       lng3 = lng1 + dLng13
       lng3 = (lng3 + 3 * Math::PI) % (2 * Math::PI) - Math::PI
 
-      Location.new(lat3.to_degrees, lng3.to_degrees)
+      { lat: lat3, lng: lng3 }
     end
 
 
@@ -116,10 +121,9 @@ module Geoincident
     ##
     # Given a point p, heading in degrees for this point and a
     # maximum distance in meters, calculate a destination point
-    def destination_point(p, distance=1500)
-      lat = p.lat.to_rad
-      lng = p.lng.to_rad
-      h = p.heading.to_rad
+    #
+    # return point as hash with keys: lat, lng
+    def destination_point(lat, lng, h, distance=1500)
 
       angular_distance = distance.to_f / R
       cos_angular = Math.cos(angular_distance)
@@ -131,7 +135,7 @@ module Geoincident
       new_lng = lng + Math.atan2(Math.sin(h) * sin_angular * Math.cos(lat),
                                  cos_angular - Math.sin(lat) * Math.sin(new_lat))
 
-      Location.new(new_lat.to_degrees, new_lng.to_degrees)
+      { lat: new_lat, lng: new_lng }
     end
 
     #p = Location.new(37.982593, 23.675639, 180)
@@ -144,13 +148,9 @@ module Geoincident
     # on the line l1 defined from points p1 and p2, such as
     # assuming a second line l2 passing from p4 and p3,
     # is perpendicular to l1
-    def perpendicular_point(p1, p2, p3)
-      lat1 = p1.lat.to_rad
-      lng1 = p1.lng.to_rad
-      lat2 = p2.lat.to_rad
-      lng2 = p2.lng.to_rad
-      lat3 = p3.lat.to_rad
-      lng3 = p3.lng.to_rad
+    #
+    # return point as hash with keys: lat, lng
+    def perpendicular_point(lat1, lng1, lat2, lng2, lat3, lng3)
 
       minimum_distance = ((lat3 - lat1) * (lat2 - lat1) + (lng3 - lng1) * (lng2 - lng1)) /
         ((lat2 - lat1) * (lat2 - lat1) + (lng2 - lng1) * (lng2 - lng1))
@@ -158,7 +158,7 @@ module Geoincident
       lat4 = lat1 + minimum_distance * (lat2 - lat1)
       lng4 = lng1 + minimum_distance * (lng2 - lng1)
 
-      Location.new(lat4.to_degrees, lng4.to_degrees)
+      { lat: lat4, lng: lng4 }
     end
 
     #p1 = Location.new(37.982638, 23.67558)
@@ -169,6 +169,8 @@ module Geoincident
 
 
     ## Find midpoint of line defined by 2 other points
+    #
+    # return point as hash with keys: lat, lng
     def midpoint(p1, p2)
       lat1 = p1.lat.to_rad
       lng1 = p1.lng.to_rad
@@ -178,7 +180,7 @@ module Geoincident
       new_lat = (lat1 + lat2) / 2
       new_lng = (lng1 + lng2) / 2
 
-      Location.new(new_lat.to_degrees, new_lng.to_degrees)
+      { lat: new_lat, lng: new_lng }
     end
   end
 end
