@@ -55,8 +55,10 @@ module Geoincident
                             longitude: cross_point[:lng].to_degrees,
                             radius: INCIDENT_RADIUS }
 
-          incident = Incident.new(incident_data)
-          incident.save
+          with_incident_logger do
+            incident = Incident.new(incident_data)
+            incident.save
+          end
 
           # attach these reports to the new incident
           attach_to_incident(@reference_report, incident)
