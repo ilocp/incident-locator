@@ -43,8 +43,8 @@ module Geoincident
         end
 
         # calculate distances
-        d1 = Trig.location_distance(@reference_point.latitude.to_rad,
-                                    @reference_point.longitude.to_rad,
+        d1 = Trig.location_distance(@reference_report.latitude.to_rad,
+                                    @reference_report.longitude.to_rad,
                                     cross_point[:lat], cross_point[:lng])
 
         d2 = Trig.location_distance(report.latitude.to_rad,
