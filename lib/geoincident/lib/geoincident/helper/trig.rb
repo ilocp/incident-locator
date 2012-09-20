@@ -171,12 +171,7 @@ module Geoincident
     ## Find midpoint of line defined by 2 other points
     #
     # return point as hash with keys: lat, lng
-    def midpoint(p1, p2)
-      lat1 = p1.lat.to_rad
-      lng1 = p1.lng.to_rad
-      lat2 = p2.lat.to_rad
-      lng2 = p2.lng.to_rad
-
+    def midpoint(lat1, lng1, lat2, lng2)
       new_lat = (lat1 + lat2) / 2
       new_lng = (lng1 + lng2) / 2
 
