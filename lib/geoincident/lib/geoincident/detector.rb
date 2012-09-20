@@ -94,6 +94,43 @@ module Geoincident
       end
     end
 
+    # use a report to adjust (improve) the location of an incident
+    # this function does not perform any point validity checks
+    # caller must decide if report is appropriate to improve the
+    # incident's location
+    def adjust_incident_location(report, incident)
+      # avoid duplicate radian calculations
+      r_lat = report.latitude.to_rad
+      r_lng = report.longitude.to_rad
+      r_h = report.heading.to_rad
+
+      i_lat = incident.latitude.to_rad
+      i_lng = incident.longitude.to_rad
+
+      # calculate destination point of report in order to obtain a
+      # virtual line
+      dest = Trig.destination_point(r_lat, r_lng, r_h, VISIBILITY_RADIUS)
+
+      # calculate the point where the previous virtual line
+      # is perpendicular with a virtual line passing from the
+      # incident location
+      p_point = Tring.perpendicular_point(r_lat, r_lng,
+                                          dest[:lat], dest[:lng],
+                                          i_lat, i_lng)
+
+      # calculate new position
+      # namely, the midpoint of the line passing from incident and the
+      # perpendicular line point
+      new_position = Trig.midpoint(i_lat, i_lng,
+                                   p_point[:lat], p_point[:lng])
+
+      # update position
+      incident.latitude = new_position[:lat].to_degrees
+      incident.longitude = new_position[:lng].to_degrees
+
+      with_incident_logger { incident.save! }
+    end
+
     # use when creating/updating report records
     def with_record_logger
       begin
