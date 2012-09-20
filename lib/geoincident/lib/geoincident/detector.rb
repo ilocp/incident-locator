@@ -90,5 +90,28 @@ module Geoincident
       date_range ||= 2.days.ago...Time.now
       Report.where(incident_id: nil, updated_at: date_range)
     end
+
+    # use when creating/updating report records
+    def with_record_logger
+      begin
+        yield
+      rescue ActiveRecord::RecordInvalid => invalid
+        Rails.logger.error "Could not set incident id for report"
+      else
+        Rails.logger.error "An error occured while updating a report record"
+      end
+    end
+
+    # use when creating/updating incident records
+    def with_incident_logger
+      begin
+        yield
+      rescue ActiveRecord::RecordInvalid => invalid
+        Rails.logger.error "Could not create/update incident record"
+      else
+        Rails.logger.error "An error occured while updating an incident record"
+      end
+    end
+
   end
 end
