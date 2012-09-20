@@ -86,6 +86,12 @@ module Geoincident
       Report.where(incident_id: nil, updated_at: date_range)
     end
 
+    # Return all incidents considered as active
+    def get_active_incidents(date_range=nil)
+      date_range ||= 2.days.ago...Time.now
+      Incident.where(updated_at: date_range)
+    end
+
     # attach report to incident
     def attach_to_incident(report, incident)
       with_record_logger do
