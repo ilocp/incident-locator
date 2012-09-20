@@ -57,7 +57,7 @@ module Geoincident
 
           with_incident_logger do
             incident = Incident.new(incident_data)
-            incident.save
+            incident.save!
           end
 
           # attach these reports to the new incident
