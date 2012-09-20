@@ -11,10 +11,6 @@ module Geoincident
       @reference_report = reference_report
     end
 
-    def belongs_to_incident?
-      raise NotImplementedError
-    end
-
     def detect_new_incident
       orphans = get_orphan_reports
 
@@ -73,9 +69,19 @@ module Geoincident
       end
 
       incident
-
     end
 
+    # Search all active incidents and determine if given
+    # report should belong to it
+    def scan_incidents(report)
+      raise NotImplementedError
+    end
+
+    # Search all orphan incidents and determine if any of them
+    # should be attached to the given incident
+    def scan_reports(incident)
+      raise NotImplementedError
+    end
 
     private
 
@@ -90,6 +96,11 @@ module Geoincident
     def get_active_incidents(date_range=nil)
       date_range ||= 2.days.ago...Time.now
       Incident.where(updated_at: date_range)
+    end
+
+    # Check if given report should belong to incident
+    def belongs_to_incident?(report, incident)
+      raise NotImplementedError
     end
 
     # attach report to incident
