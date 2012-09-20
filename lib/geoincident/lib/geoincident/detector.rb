@@ -105,7 +105,7 @@ module Geoincident
 
     # attach report to incident
     def attach_to_incident(report, incident)
-      with_record_logger do
+      with_report_logger do
         report.incident_id = incident.id
         report.save!
       end
@@ -149,7 +149,7 @@ module Geoincident
     end
 
     # use when creating/updating report records
-    def with_record_logger
+    def with_report_logger
       begin
         yield
       rescue ActiveRecord::RecordInvalid => invalid
