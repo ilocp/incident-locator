@@ -15,10 +15,6 @@ module Geoincident
       raise NotImplementedError
     end
 
-    def attach_to_incident
-      raise NotImplementedError
-    end
-
     def detect_new_incident
       orphans = get_orphan_reports
 
@@ -63,11 +59,8 @@ module Geoincident
           incident.save
 
           # attach these reports to the new incident
-          # TODO add some error checking here
-          @reference_report.incident_id = incident.id
-          @reference_report.save
-          report.incident_id = incident.id
-          report.save
+          attach_to_incident(@reference_report, incident)
+          attach_to_incident(report, incident)
 
           # nothing more to do, break the loop
           # we nedd to call another method after that to search for
@@ -84,11 +77,19 @@ module Geoincident
 
     private
 
+    # Return all orphan reports, namely all records with nil incident_id
+    # by default all reports created/updated 2 days ago are considered
     def get_orphan_reports(date_range=nil)
-      # Return all orphan reports, namely all records with nil incident_id
-      # by default all reports created/updated 2 days ago are considered
       date_range ||= 2.days.ago...Time.now
       Report.where(incident_id: nil, updated_at: date_range)
+    end
+
+    # attach report to incident
+    def attach_to_incident(report, incident)
+      with_record_logger do
+        report.incident_id = incident.id
+        report.save!
+      end
     end
 
     # use when creating/updating report records
