@@ -112,12 +112,6 @@ module Geoincident
       { lat: lat3, lng: lng3 }
     end
 
-
-    # p1 = Location.new(37.982638,23.67558,180)
-    # p2 = Location.new(37.97541,23.655324,90)
-    # p3 = points_intersection(p1, p2)
-
-
     ##
     # Given a point p, heading in degrees for this point and a
     # maximum distance in meters, calculate a destination point
@@ -138,11 +132,6 @@ module Geoincident
       { lat: new_lat, lng: new_lng }
     end
 
-    #p = Location.new(37.982593, 23.675639, 180)
-    #p_new = destination_point(p)
-    #puts "#{p_new.lat}, #{p_new.lng}"
-
-
     ##
     # Given 3 points p1, p2, p3 calculate a fourth point p4
     # on the line l1 defined from points p1 and p2, such as
@@ -160,13 +149,6 @@ module Geoincident
 
       { lat: lat4, lng: lng4 }
     end
-
-    #p1 = Location.new(37.982638, 23.67558)
-    #p2 = Location.new(37.969118, 23.67558)
-    #p3 = Location.new(37.973572, 23.66798)
-    #p4 = perpendicular_point(p1, p2, p3)
-    #puts "#{p4.lat}, #{p4.lng}"
-
 
     ## Find midpoint of line defined by 2 other points
     #
