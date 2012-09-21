@@ -77,7 +77,7 @@ module Geoincident
       raise NotImplementedError
     end
 
-    # Search all orphan incidents and determine if any of them
+    # Search all orphan reports and determine if any of them
     # should be attached to the given incident
     def scan_reports(incident)
       raise NotImplementedError
