@@ -100,7 +100,17 @@ module Geoincident
 
     # Check if given report should belong to incident
     def belongs_to_incident?(report, incident)
-      raise NotImplementedError
+      # check if report is within incident radius
+      distance = Trig.location_distance(report.latitude.to_rad,
+                                        report.longitude.to_rad,
+                                        incident.latitude.to_rad,
+                                        incident.longitude.to_rad)
+
+      if distance > incident.radius
+        return false
+      end
+
+      true
     end
 
     # attach report to incident
