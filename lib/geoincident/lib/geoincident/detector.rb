@@ -7,11 +7,7 @@ module Geoincident
   class Detector
     # TODO: don't hardcode models
 
-    def initialize(reference_report)
-      @reference_report = reference_report
-    end
-
-    def detect_new_incident
+    def detect_new_incident(reference_report)
       orphans = get_orphan_reports
 
       incident = nil
@@ -19,13 +15,13 @@ module Geoincident
         # iterate each report not assigned to an incident
         # and calculate the intersections
 
-        if report.id == @reference_report.id
+        if report.id == reference_report.id
           next
         end
 
-        cross_point = Trig.points_intersection(@reference_report.latitude.to_rad,
-                                               @reference_report.longitude.to_rad,
-                                               @reference_report.heading.to_rad,
+        cross_point = Trig.points_intersection(reference_report.latitude.to_rad,
+                                               reference_report.longitude.to_rad,
+                                               reference_report.heading.to_rad,
                                                report.latitude.to_rad,
                                                report.longitude.to_rad,
                                                report.heading.to_rad)
@@ -35,8 +31,8 @@ module Geoincident
         end
 
         # calculate distances
-        d1 = Trig.location_distance(@reference_report.latitude.to_rad,
-                                    @reference_report.longitude.to_rad,
+        d1 = Trig.location_distance(reference_report.latitude.to_rad,
+                                    reference_report.longitude.to_rad,
                                     cross_point[:lat], cross_point[:lng])
 
         d2 = Trig.location_distance(report.latitude.to_rad,
@@ -57,7 +53,7 @@ module Geoincident
           end
 
           # attach these reports to the new incident
-          attach_to_incident(@reference_report, incident)
+          attach_to_incident(reference_report, incident)
           attach_to_incident(report, incident)
 
           # nothing more to do, break the loop

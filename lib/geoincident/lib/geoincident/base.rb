@@ -10,11 +10,11 @@ module Geoincident
   #autoload :ActsAsIncident,     'geoincident/acts_as_incident'
 
   def Geoincident::process(report)
-    d = Detector.new(report)
+    d = Detector.new
 
     # Initial functionality: just test for new reports
     # we actually need somethins more elaborate than this
-    d.detect_new_incident
+    d.detect_new_incident(report)
   end
 
 end
