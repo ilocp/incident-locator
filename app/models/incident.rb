@@ -11,9 +11,13 @@
 #
 
 class Incident < ActiveRecord::Base
+  include FormatCoordinates
+
   attr_accessible :longitude, :latitude, :radius
 
   has_many :reports
+
+  before_save :round_coordinates
 
   validates :latitude, presence: true, numericality: true, latitude: true
   validates :longitude, presence: true, numericality: true, longitude: true
