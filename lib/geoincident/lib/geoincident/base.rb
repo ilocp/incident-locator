@@ -10,11 +10,23 @@ module Geoincident
   #autoload :ActsAsIncident,     'geoincident/acts_as_incident'
 
   def Geoincident::process(report)
-    d = Detector.new
+    detector = Detector.new
 
-    # Initial functionality: just test for new reports
-    # we actually need somethins more elaborate than this
-    d.detect_new_incident(report)
+    # check if we can attach this report to an existing incident
+    found = detector.scan_incidents(report)
+
+    # we could not find incident to attach our report
+    # try to create a new one using other reports from
+    # the database
+    unless found
+      new_incident = detector.detect_new_incident(report)
+
+      # scan other orphan reports as they may
+      # belong to the newly-created incident
+      unless new_incident.nil?
+        detector.scan_reports(new_incident)
+      end
+    end
   end
 
 end
