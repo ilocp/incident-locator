@@ -71,6 +71,7 @@ GEM
     faker (1.0.1)
       i18n (~> 0.4)
     ffi (1.1.5)
+    gmaps4rails (1.5.5)
     haml (3.1.7)
     haml-rails (0.3.4)
       actionpack (~> 3.0)
@@ -176,6 +177,7 @@ DEPENDENCIES
   debugger
   factory_girl_rails
   faker
+  gmaps4rails
   haml-rails
   jquery-rails
   pg
