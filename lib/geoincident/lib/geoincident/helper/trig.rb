@@ -160,5 +160,16 @@ module Geoincident
 
       { lat: new_lat, lng: new_lng }
     end
+
+    ##
+    # Calculate angle between 2 lines defined by 3 points
+    #
+    # return angle in radians
+    def angle_between_lines(lat1, lng1, lat2, lng2, lat3, lng3)
+      angle1 = Math.atan2(lng1 - lng2, lat1 - lat2)
+      angle2 = Math.atan2(lng2 - lng3, lat2 - lat3)
+
+      angle1 - angle2
+    end
   end
 end
