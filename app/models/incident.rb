@@ -19,6 +19,8 @@ class Incident < ActiveRecord::Base
 
   before_save :round_coordinates
 
+  acts_as_gmappable :process_geocoding => false
+
   validates :latitude, presence: true, numericality: true, latitude: true
   validates :longitude, presence: true, numericality: true, longitude: true
   validates :radius, presence: true, numericality: { greater_than: 0 }

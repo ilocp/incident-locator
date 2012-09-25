@@ -11,6 +11,7 @@ IncidentLocator::Application.routes.draw do
 
   # incidents
   resources :incidents, only: [:index]
+  match 'map' => 'incidents#map', :via => :get
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
