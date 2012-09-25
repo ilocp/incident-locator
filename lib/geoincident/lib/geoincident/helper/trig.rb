@@ -150,7 +150,8 @@ module Geoincident
       { lat: lat4, lng: lng4 }
     end
 
-    ## Find midpoint of line defined by 2 other points
+    ##
+    # Find midpoint of line defined by 2 other points
     #
     # return point as hash with keys: lat, lng
     def midpoint(lat1, lng1, lat2, lng2)
