@@ -109,6 +109,28 @@ module Geoincident
       true
     end
 
+    def can_adjust?(report, incident)
+      # avoid duplicate radian conversion
+      r_lat = report.latitude.to_rad
+      r_lng = report.longitude.to_rad
+
+      # calculate a 3rd point using the report and radius
+      dest = Trig.destination_point(r_lat, r_lng, report.heading.to_rad,
+                                    VISIBILITY_RADIUS)
+
+      angle = Trig.angle_between_lines(incident.latitude.to_rad,
+                                       incident.longitude.to_rad,
+                                       r_lat, r_lng,
+                                       dest[:lat], dest[:lng])
+
+      # we can adjust incident position only if angle <= 90
+      if angle.to_degrees.abs > 90
+        return false
+      end
+
+      true
+    end
+
     # attach report to incident
     def attach_to_incident(report, incident)
       with_report_logger do
