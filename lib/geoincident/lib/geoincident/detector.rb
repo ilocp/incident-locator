@@ -92,7 +92,19 @@ module Geoincident
     # Search all orphan reports and determine if any of them
     # should be attached to the given incident
     def scan_reports(incident)
-      raise NotImplementedError
+      orphan_reports = get_orphan_reports
+
+      orphan_reports.each do |report|
+        unless belongs_to_incident?(report, incident)
+          next
+        end
+
+        attach_to_incident(report, incident)
+
+        if can_adjust_incident_position?(report, incident)
+          adjust_incident_position(report, incident)
+        end
+      end
     end
 
     private
