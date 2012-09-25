@@ -109,7 +109,7 @@ module Geoincident
       true
     end
 
-    def can_adjust?(report, incident)
+    def can_adjust_incident_position?(report, incident)
       # avoid duplicate radian conversion
       r_lat = report.latitude.to_rad
       r_lng = report.longitude.to_rad
