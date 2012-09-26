@@ -30,6 +30,17 @@ module IncidentsHelper
   # gmaps4rails
   def format_incidents(data)
     map_data = MAP_OPTIONS
+
+    # set viewport when we don't have data
+    if data.empty?
+      no_data_options = { center_latitude: 47.635784, center_longitude: 17.050781,
+                          zoom: 4, auto_adjust: false }
+
+      map_data[:map_options].merge!(no_data_options)
+      return map_data
+    end
+
+    # show circles and markers for incidents
     map_data[:circles] = { data: json_circles(data) }
     map_data[:markers] = { data: json_markers(data) }
     map_data
