@@ -79,6 +79,12 @@ describe "Authentication" do
           it { should have_h1('Sign in') }
           it { should have_notice_msg('sign in') }
         end
+
+        describe "visiting incident map page" do
+          before { visit map_path }
+          it { should have_h1('Sign in') }
+          it { should have_notice_msg('sign in') }
+        end
       end
     end
 

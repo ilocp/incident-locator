@@ -7,7 +7,6 @@ TODO
 * Support oAuth2 [?]
 * Remove web form for report submitting [?]
 * Check if we need to run the detection process as a background job
-* Integration tests for maps
 * Create a landing page
 * Reports should include IMEI and phone number [major]
 * Paginate reports and incidents [low]
