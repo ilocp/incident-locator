@@ -8,6 +8,6 @@ class IncidentsController < ApplicationController
   end
 
   def map
-    @incidents = json_circle(Incident.all)
+    @incidents_data = format_incidents(Incident.all)
   end
 end
