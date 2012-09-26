@@ -1,3 +1,5 @@
+include IncidentsHelper
+
 class IncidentsController < ApplicationController
   before_filter :signed_in_user
 
@@ -6,6 +8,6 @@ class IncidentsController < ApplicationController
   end
 
   def map
-    @incidents = Incident.all.to_gmaps4rails
+    @incidents = json_circle(Incident.all)
   end
 end
