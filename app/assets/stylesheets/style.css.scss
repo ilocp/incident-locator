@@ -1,5 +1,16 @@
+/* imports */
 @import 'bootstrap';
 @import 'gmaps4rails';
+
+/* variables - mixins */
+@mixin boxed_image {
+  background-repeat: no-repeat;
+  background-position: 50% 30%;
+  background-attachment: inherit;
+}
+
+$border-gray: #ababab;
+
 
 body {
   padding-top: 65px;
@@ -19,12 +30,6 @@ body {
 }
 
 /* front page */
-@mixin boxed_image {
-  background-repeat: no-repeat;
-  background-position: 50% 30%;
-  background-attachment: inherit;
-}
-
 .box {
   /* positioninig / size */
   padding: 1.7em;
@@ -34,7 +39,7 @@ body {
   margin: 2em 2em 2em 0em;
 
   /* borders */
-  border: 1px solid #ababab;
+  border: 1px solid $border-gray;
   border-radius: 4px 4px 4px 4px;
   box-shadow: 0 0 6px #b0b0b0;
 
@@ -72,4 +77,3 @@ body {
   background-image: url('signup.png');
   @include boxed_image;
 }
-
