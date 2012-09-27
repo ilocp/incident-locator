@@ -1,0 +1,25 @@
+%h1 Wellcome to Incident Identification Service
+
+
+-# service description
+%div
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut mi felis. Nam urna augue, dictum ut facilisis eu, rhoncus a mi. Donec mattis nulla nec urna porta vestibulum. Maecenas in elit enim. Aliquam erat volutpat. Nulla eget tellus magna, non euismod neque. Nam pulvinar, felis sit amet adipiscing viverra, erat justo cursus eros, eu varius est felis ut turpis. Phasellus quis nisi mi, sed egestas diam. Vivamus id justo id odio ullamcorper pulvinar id non lorem. Nullam ac ipsum in neque pretium sollicitudin. Donec nec augue sit amet nisl fringilla gravida et nec elit. Vestibulum blandit ullamcorper sodales. Integer dui velit, lacinia vitae porttitor sit amet, elementum id leo. Ut leo nisl, pharetra ut volutpat sit amet, ultrices vitae orci. Nulla commodo pretium est, at fringilla lectus faucibus eu.
+
+.big-links
+  .box.btn-map
+    %div.txt Incident Map
+
+  .box.btn-incidents
+    %div.txt Incident List
+
+  .box.btn-android
+    %div.txt Android Client
+
+  .box.btn-github
+    %div.txt Source Code
+
+  .box.btn-signup
+    %div.txt Sign Up
+
+%div
+  = gmaps(@incidents_data)
