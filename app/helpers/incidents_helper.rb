@@ -2,7 +2,17 @@ module IncidentsHelper
 
   private
 
+  # default map options when showing data
   MAP_OPTIONS = { map_options: { type: 'SATELLITE', auto_adjust: true } }
+
+  # default map options when no data is available - center view on Europe
+  MAP_OPTIONS_NO_DATA = {
+    map_options: {
+      type: 'SATELLITE', auto_adjust: false,
+      center_latitude: 47.635784, center_longitude: 17.050781,
+      zoom: 4, auto_adjust: false
+    }
+  }
 
   # create the appropriate JSON required for gmaps4rails circles
   def json_circles(data)
@@ -33,16 +43,14 @@ module IncidentsHelper
 
     # set viewport when we don't have data
     if data.empty?
-      no_data_options = { center_latitude: 47.635784, center_longitude: 17.050781,
-                          zoom: 4, auto_adjust: false }
-
-      map_data[:map_options].merge!(no_data_options)
-      return map_data
+      map_data = MAP_OPTIONS_NO_DATA
+    else
+      map_data = MAP_OPTIONS
+      # show circles and markers for incidents
+      map_data[:circles] = { data: json_circles(data) }
+      map_data[:markers] = { data: json_markers(data) }
     end
 
-    # show circles and markers for incidents
-    map_data[:circles] = { data: json_circles(data) }
-    map_data[:markers] = { data: json_markers(data) }
     map_data
   end
 
