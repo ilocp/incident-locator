@@ -17,16 +17,21 @@
 #
 
 class Report < ActiveRecord::Base
+  include FormatCoordinates
+
   attr_accessible :latitude, :longitude, :heading
 
   belongs_to :user
+  belongs_to :incident
 
-  COORDINATES_RANGE = -180..180
-  HEADING_RANGE = 0..360
+  before_save :round_coordinates
 
   validates :user_id, presence: true
-  validates :latitude, presence: true, inclusion: { in: COORDINATES_RANGE }
-  validates :longitude, presence: true, inclusion: { in: COORDINATES_RANGE }
-  validates :heading, presence: true, numericality: { only_integer: true },
-            inclusion: { in: HEADING_RANGE }
+  validates :latitude, presence: true, numericality: true, latitude: true
+  validates :longitude, presence: true, numericality: true, longitude: true
+  validates :heading, presence: true, heading: true,
+            numericality: { only_integer: true, message: "must be an integer value" }
+
+  default_scope order: 'reports.created_at DESC'
+
 end

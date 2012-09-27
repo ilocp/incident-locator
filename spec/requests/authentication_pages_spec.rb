@@ -63,6 +63,29 @@ describe "Authentication" do
           it { should have_h1('Sign in') }
         end
       end
+
+      describe "in Reports controller" do
+
+        describe "submiting new report" do
+          before { post reports_path }
+          specify { response.should redirect_to(signin_path) }
+        end
+      end
+
+      describe "in Incidents controller" do
+
+        describe "visiting incident index page" do
+          before { visit incidents_path }
+          it { should have_h1('Sign in') }
+          it { should have_notice_msg('sign in') }
+        end
+
+        describe "visiting incident map page" do
+          before { visit map_path }
+          it { should have_h1('Sign in') }
+          it { should have_notice_msg('sign in') }
+        end
+      end
     end
 
     describe "after sign-in" do

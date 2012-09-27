@@ -16,12 +16,26 @@ describe "User pages" do
 
   describe "profile page" do
     let(:user) { FactoryGirl.create(:user) }
+
+    let!(:r1) { FactoryGirl.create(:report, user: user, latitude: 19.0943141,
+                                   longitude: 87.9875209) }
+    let!(:r2) { FactoryGirl.create(:report, user: user, latitude: 89.0264901,
+                                   longitude: 27.8410981) }
     before do
       sign_in user
       visit user_path(user)
     end
 
     it { should have_h1(user.name) }
+
+    describe "reports" do
+      it { should have_selector('h2', text: 'Incident reports') }
+      it { should have_selector('div.reports table') }
+      it { should have_content(r1.latitude) }
+      it { should have_content(r1.longitude) }
+      it { should have_content(r2.latitude) }
+      it { should have_content(r2.longitude) }
+    end
   end
 
   describe "signup" do

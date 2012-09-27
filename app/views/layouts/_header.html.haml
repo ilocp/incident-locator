@@ -3,7 +3,7 @@
     -# same as the main content area
     .container-fluid
       -# logo goes here (?)
-      = link_to "Incident Locator", "#", :class => "brand"
+      = link_to "Incident Locator", root_path, :class => "brand"
       %ul.nav.pull-right
         - if signed_in?
           %li.dropdown

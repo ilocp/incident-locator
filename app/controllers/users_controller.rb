@@ -17,6 +17,7 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     @user = User.find(params[:id])
+    @reports = @user.reports
 
     respond_to do |format|
       format.html # show.html.erb
@@ -90,4 +91,12 @@ class UsersController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+
+    def correct_user
+      user = User.find(params[:id])
+      #todo: redirect to application root
+      redirect_to(users_path) unless current_user?(user)
+    end
 end

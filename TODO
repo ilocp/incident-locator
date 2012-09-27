@@ -1,0 +1,14 @@
+TODO
+----
+* Test detector logic [major]
+* Create roles [major]
+* Create role-based permissions [major]
+* Expose required api calls for mobile devices [major]
+* Support oAuth2 [?]
+* Remove web form for report submitting [?]
+* Check if we need to run the detection process as a background job
+* Reports should include IMEI and phone number [major]
+* Paginate reports and incidents [low]
+* Support viewing individual reports in a map
+* Support for incident photo uploading
+* Email verification on registration [low]

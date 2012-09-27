@@ -1,8 +1,19 @@
 %h1= @user.name
-%div= gravatar_for @user
 
-%p
-  %b Email:
-  = @user.email
+.information
+  %div= gravatar_for @user
+  %div
+    %b Email:
+    = @user.email
 
-= link_to 'Back', users_path
+%h2= 'Incident reports'
+.reports
+  %table.table.table-striped.table-bordered
+    -#%caption 'List of all incident reports made by user'
+    %thead
+      %tr
+        %th= 'Latitude'
+        %th= 'Longitude'
+        %th= 'Heading'
+    %tbody
+      = render @reports
