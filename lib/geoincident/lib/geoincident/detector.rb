@@ -8,7 +8,7 @@ module Geoincident
     # TODO: don't hardcode models
 
     def detect_new_incident(reference_report)
-      orphans = get_orphan_reports
+      orphans = get_orphan_reports(reference_report)
 
       incident = nil
       orphans.each do |report|
@@ -70,7 +70,7 @@ module Geoincident
     # Search all active incidents and determine if given
     # report should belong to it
     def scan_incidents(report)
-      active_incidents = get_active_incidents
+      active_incidents = get_active_incidents(report)
 
       active_incidents.each do |incident|
         unless belongs_to_incident?(report, incident)
@@ -92,7 +92,7 @@ module Geoincident
     # Search all orphan reports and determine if any of them
     # should be attached to the given incident
     def scan_reports(incident)
-      orphan_reports = get_orphan_reports
+      orphan_reports = get_orphan_reports(incident)
 
       orphan_reports.each do |report|
         unless belongs_to_incident?(report, incident)
@@ -111,15 +111,43 @@ module Geoincident
 
     # Return all orphan reports, namely all records with nil incident_id
     # by default all reports created/updated 2 days ago are considered
-    def get_orphan_reports(date_range=nil)
+    def get_orphan_reports(location, date_range=nil, query_radius=nil)
+      # FIXME see if 2 days is too old
       date_range ||= 2.days.ago...Time.now
-      Report.where(incident_id: nil, updated_at: date_range)
+      query_radius ||= Geoincident::QUERY_CIRCLE_RADIUS
+
+      # get coordinate ranges which include our candidate reports
+      lat_range, lng_range = query_ranges(location, query_radius)
+
+      Report.where(incident_id: nil, updated_at: date_range,
+                   latitude: lat_range, longitude: lng_range)
     end
 
     # Return all incidents considered as active
-    def get_active_incidents(date_range=nil)
+    def get_active_incidents(location, date_range=nil, query_radius=nil)
+      # FIXME see if 2 days is too old
       date_range ||= 2.days.ago...Time.now
-      Incident.where(updated_at: date_range)
+      query_radius ||= Geoincident::QUERY_CIRCLE_RADIUS
+
+      # get coordinate ranges which include our candidate reports
+      lat_range, lng_range = query_ranges(location, query_radius)
+
+      Incident.where(updated_at: date_range, latitude: lat_range,
+                     longitude: lng_range)
+    end
+
+    # use the bounding box technique to return query limits for coordinates
+    # returns two range objects one for latitude and one for longitude
+    # +location+ must respond to latitude and longitude methods
+    # +radius+ must be in meters
+    def query_ranges(location, radius)
+      box = Trig.bounding_box(location.latitude.to_rad,
+                              location.longitude.to_rad,
+                              radius)
+
+      lat_range = box[:lat_min].to_degrees..box[:lat_max].to_degrees
+      lng_range = box[:lng_min].to_degrees..box[:lng_max].to_degrees
+      [lat_range, lng_range]
     end
 
     # Check if given report should belong to incident
