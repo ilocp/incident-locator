@@ -119,9 +119,9 @@ module Geoincident
     # return point as hash with keys: lat, lng
     def destination_point(lat, lng, h, distance=1500)
 
-      angular_distance = distance.to_f / R
-      cos_angular = Math.cos(angular_distance)
-      sin_angular = Math.sin(angular_distance)
+      d_angular = angular_distance(distance)
+      cos_angular = Math.cos(d_angular)
+      sin_angular = Math.sin(d_angular)
 
       new_lat = Math.asin(Math.sin(lat) * cos_angular +
                           Math.cos(lat) * sin_angular * Math.cos(h))
@@ -171,5 +171,10 @@ module Geoincident
 
       angle1 - angle2
     end
+  end
+
+  # calculate angular distnace using earth's radius
+  def angular_distance(distance)
+    distance.to_f / R
   end
 end
