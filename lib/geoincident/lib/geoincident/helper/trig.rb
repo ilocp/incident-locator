@@ -177,47 +177,46 @@ module Geoincident
 
       angle1 - angle2
     end
-  end
 
-  # calculate angular distnace using earth's radius
-  def angular_distance(distance)
-    distance.to_f / R
-  end
-
-  ##
-  # calculate a bounding rectangle containing the circle defined
-  # by `lat`, `lng` and radius `distance`
-  # source: http://janmatuschek.de/LatitudeLongitudeBoundingCoordinates
-  #
-  # return 2 points which represent the rectangle's opposite corners
-  def bounding_box(lat, lng, distance)
-    d_angular = angular_distance(distance)
-
-    lat_min = lat - d_angular
-    lat_max = lat + d_angular
-
-    if lat_min > LAT_MIN and lat_max < LAT_MAX
-      d_lng = Math.asin(Math.sin(d_angular) / Math.cos(lat))
-
-      lng_min = lng - d_lng
-
-      if lng_min < LNG_MIN
-        lng_min += 2.0 * Math::PI
-      end
-
-      lng_max = lng + d_lng
-
-      if lng_max > LNG_MAX
-        lng_max -= 2.0 * Math::PI
-      end
-    else
-      lat_min = [lat_min, LAT_MIN].min
-      lat_max = [lat_max, LAT_MAX].max
-      lng_min = LNG_MIN
-      lng_max = LNG_MAX
+    # calculate angular distnace using earth's radius
+    def angular_distance(distance)
+      distance.to_f / R
     end
 
-    { lat_min: lat_min, lng_min: lng_min, lat_max: lat_max, lng_max: lng_max }
-  end
+    ##
+    # calculate a bounding rectangle containing the circle defined
+    # by `lat`, `lng` and radius `distance`
+    # source: http://janmatuschek.de/LatitudeLongitudeBoundingCoordinates
+    #
+    # return 2 points which represent the rectangle's opposite corners
+    def bounding_box(lat, lng, distance)
+      d_angular = angular_distance(distance)
 
+      lat_min = lat - d_angular
+      lat_max = lat + d_angular
+
+      if lat_min > LAT_MIN and lat_max < LAT_MAX
+        d_lng = Math.asin(Math.sin(d_angular) / Math.cos(lat))
+
+        lng_min = lng - d_lng
+
+        if lng_min < LNG_MIN
+          lng_min += 2.0 * Math::PI
+        end
+
+        lng_max = lng + d_lng
+
+        if lng_max > LNG_MAX
+          lng_max -= 2.0 * Math::PI
+        end
+      else
+        lat_min = [lat_min, LAT_MIN].min
+        lat_max = [lat_max, LAT_MAX].max
+        lng_min = LNG_MIN
+        lng_max = LNG_MAX
+      end
+
+      { lat_min: lat_min, lng_min: lng_min, lat_max: lat_max, lng_max: lng_max }
+    end
+  end
 end
