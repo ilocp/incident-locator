@@ -239,8 +239,6 @@ module Geoincident
       rescue ActiveRecord::RecordInvalid => invalid
         Geoincident.logger.error "Could not set incident id for report"
         Geoincident.logger.error invalid.record.errors.messages.to_s
-      else
-        Geoincident.logger.error "An error occured while updating a report record"
       end
     end
 
@@ -251,8 +249,6 @@ module Geoincident
       rescue ActiveRecord::RecordInvalid => invalid
         Geoincident.logger.error "Could not create/update incident record"
         Geoincident.logger.error invalid.record.errors.messages.to_s
-      else
-        Geoincident.logger.error "An error occured while updating an incident record"
       end
     end
 
