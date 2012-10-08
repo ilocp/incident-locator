@@ -1,5 +1,6 @@
 module Geoincident
 
+  require 'geoincident/logger'
   require 'geoincident/version'
   require 'geoincident/detector'
 

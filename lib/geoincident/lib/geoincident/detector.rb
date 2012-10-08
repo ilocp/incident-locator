@@ -237,10 +237,10 @@ module Geoincident
       begin
         yield
       rescue ActiveRecord::RecordInvalid => invalid
-        Rails.logger.error "Could not set incident id for report"
-        Rails.logger.error invalid.record.errors.messages.to_s
+        Geoincident.logger.error "Could not set incident id for report"
+        Geoincident.logger.error invalid.record.errors.messages.to_s
       else
-        Rails.logger.error "An error occured while updating a report record"
+        Geoincident.logger.error "An error occured while updating a report record"
       end
     end
 
@@ -249,10 +249,10 @@ module Geoincident
       begin
         yield
       rescue ActiveRecord::RecordInvalid => invalid
-        Rails.logger.error "Could not create/update incident record"
-        Rails.logger.error invalid.record.errors.messages.to_s
+        Geoincident.logger.error "Could not create/update incident record"
+        Geoincident.logger.error invalid.record.errors.messages.to_s
       else
-        Rails.logger.error "An error occured while updating an incident record"
+        Geoincident.logger.error "An error occured while updating an incident record"
       end
     end
 
