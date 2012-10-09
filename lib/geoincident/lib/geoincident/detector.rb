@@ -52,6 +52,9 @@ module Geoincident
             incident.save!
           end
 
+          Geoincident.logger.debug "Reports with IDs #{reference_report.id} and #{report.id} "\
+                                   "created new incident with data: #{incident_data.to_s}"
+
           # attach these reports to the new incident
           attach_to_incident(reference_report, incident)
           attach_to_incident(report, incident)
@@ -145,8 +148,13 @@ module Geoincident
                               location.longitude.to_rad,
                               radius)
 
+      Geoincident.logger.debug "Calculated bounding box with coordinates: "\
+                               "min: [#{box[:lat_min].to_degrees} / #{box[:lng_min].to_degrees}] "\
+                               "max: [#{box[:lat_max].to_degrees} / #{box[:lng_max].to_degrees}]"
+
       lat_range = box[:lat_min].to_degrees..box[:lat_max].to_degrees
       lng_range = box[:lng_min].to_degrees..box[:lng_max].to_degrees
+
       [lat_range, lng_range]
     end
 
@@ -192,6 +200,7 @@ module Geoincident
       with_report_logger do
         report.incident_id = incident.id
         report.save!
+        Geoincident.logger.debug "Report #{report.id} attached to incident #{incident.id}"
       end
     end
 
@@ -230,6 +239,9 @@ module Geoincident
       incident.longitude = new_position[:lng].to_degrees
 
       with_incident_logger { incident.save! }
+
+      Geoincident.logger.debug "Incident #{incident.id} position adjust by report #{report.id} "\
+                               "at lat: #{incident.latitude} / lng: #{incident.longitude}"
     end
 
     # use when creating/updating report records
