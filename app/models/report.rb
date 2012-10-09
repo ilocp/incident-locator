@@ -13,7 +13,8 @@
 #
 # Indexes
 #
-#  index_reports_on_user_id  (user_id)
+#  index_reports_on_latitude_and_longitude  (latitude,longitude)
+#  index_reports_on_user_id                 (user_id)
 #
 
 class Report < ActiveRecord::Base

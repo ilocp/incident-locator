@@ -9,6 +9,10 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
+# Indexes
+#
+#  index_incidents_on_latitude_and_longitude  (latitude,longitude)
+#
 
 class Incident < ActiveRecord::Base
   include FormatCoordinates
