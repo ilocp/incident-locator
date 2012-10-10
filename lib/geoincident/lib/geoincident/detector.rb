@@ -224,9 +224,9 @@ module Geoincident
       # calculate the point where the previous virtual line
       # is perpendicular with a virtual line passing from the
       # incident location
-      p_point = Tring.perpendicular_point(r_lat, r_lng,
-                                          dest[:lat], dest[:lng],
-                                          i_lat, i_lng)
+      p_point = Trig.perpendicular_point(r_lat, r_lng,
+                                         dest[:lat], dest[:lng],
+                                         i_lat, i_lng)
 
       # calculate new position
       # namely, the midpoint of the line passing from incident and the
