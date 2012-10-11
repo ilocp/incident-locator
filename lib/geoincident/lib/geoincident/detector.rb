@@ -139,6 +139,11 @@ module Geoincident
                      longitude: lng_range)
     end
 
+    # return the number of reports assigned to the given incident
+    def report_count(incident)
+      Report.where(incident_id: incident.id).count
+    end
+
     # use the bounding box technique to return query limits for coordinates
     # returns two range objects one for latitude and one for longitude
     # +location+ must respond to latitude and longitude methods
