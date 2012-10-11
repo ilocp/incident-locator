@@ -233,11 +233,21 @@ module Geoincident
                                          dest[:lat], dest[:lng],
                                          i_lat, i_lng)
 
-      # calculate new position
-      # namely, the midpoint of the line passing from incident and the
-      # perpendicular line point
-      new_position = Trig.midpoint(i_lat, i_lng,
-                                   p_point[:lat], p_point[:lng])
+      # Calculate new position
+      #
+      # Each subsequent report contributes less from the previous report.
+      # If we have 10 reports, we separate the virtual line  segment
+      # between the incident (i) and the perpendicular point (p) in 9
+      # equal parts. We choose the closest to the incident part as our
+      # new incident position (n).
+      #
+      #  | -- * -- * -- * -- * -- * -- * -- * -- * -- |
+      #  i    n                                       p
+      #
+      reports_for_incident = report_count(incident)
+      new_position = Trig.adjust_by_number(i_lat, i_lng,
+                                           p_point[:lat], p_point[:lng],
+                                           reports_for_incident)
 
       # update position
       incident.latitude = new_position[:lat].to_degrees
