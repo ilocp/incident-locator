@@ -167,6 +167,28 @@ module Geoincident
       { lat: new_lat, lng: new_lng }
     end
 
+
+    ##
+    # Adjust a position on the map based on a number of previous reports.
+    #
+    # This actually returns the coordinates of the Nth part of a line
+    # segment.
+    # Line segment is defined by lat1/lng1 and lat2/lng2.
+    # If no number is given, assume we want the midpoint.
+    # This deprecates the <tt>midpoint</tt> function.
+    #
+    # IMPORTANT
+    # The lat1/lng1 must correspond to the incident coordinates.
+    #
+    # return the new point as hash with keys lat,lng
+    def adjust_by_number(lat1, lng1, lat2, lng2, num=2)
+
+      new_lat = lat1 + ((lat2 - lat1) / n)
+      new_lng = lng1 + ((lng2 - lng1) / n)
+
+      { lat: new_lat, lng: new_lng }
+    end
+
     ##
     # Calculate angle between 2 lines defined by 3 points
     #
