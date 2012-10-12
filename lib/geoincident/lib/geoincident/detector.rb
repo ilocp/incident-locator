@@ -233,8 +233,17 @@ module Geoincident
                                          dest[:lat], dest[:lng],
                                          i_lat, i_lng)
 
-      # new position using the report number algorithm
-      new_position = Trig.adjust_by_number(incident, p_point)
+      # calculate new position
+      # If we don't have many reports use the number-based algorithm
+      # If we have many reports we need only small adjustments so we
+      # use the weight-based algorithm
+      reports_count = report_count(incident.id)
+
+      if reports_count > 50
+        new_position = adjust_by_weight(incident, p_point)
+      else
+        new_position = adjust_by_number(incident, p_point, reports_count)
+      end
 
       # update position
       incident.latitude = new_position[:lat].to_degrees
