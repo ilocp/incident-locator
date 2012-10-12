@@ -29,4 +29,6 @@ class Incident < ActiveRecord::Base
   validates :longitude, presence: true, numericality: true, longitude: true
   validates :radius, presence: true, numericality: { greater_than: 0 }
 
+  default_scope order: 'incidents.updated_at DESC'
+
 end

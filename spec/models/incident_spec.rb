@@ -94,6 +94,20 @@ describe Incident do
         it { @new_incident.longitude.should == @new_incident.longitude.round(7) }
       end
     end
+
+    describe "listing incidents" do
+      let!(:old_incident) do
+        FactoryGirl.create(:incident, created_at: 1.day.ago, updated_at: 1.day.ago)
+      end
+
+      let!(:new_incident) do
+        FactoryGirl.create(:incident, created_at: 1.hour.ago, updated_at: 1.hour.ago)
+      end
+
+      it "should return last updated incident first" do
+        Incident.all.should == [new_incident, old_incident]
+      end
+    end
   end
 
 end
