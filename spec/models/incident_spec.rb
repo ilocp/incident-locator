@@ -80,4 +80,18 @@ describe Incident do
     end
   end
 
+  describe "with valid location" do
+    before do
+      @new_incident = @incident.dup
+      @new_incident.latitude = 1.12345678
+      @new_incident.longitude = 1.12345678
+      @new_incident.save
+    end
+
+    describe "should have 7 or less decimal digits in coordinates" do
+      it { @new_incident.latitude.should == @new_incident.latitude.round(7) }
+      it { @new_incident.longitude.should == @new_incident.longitude.round(7) }
+    end
+  end
+
 end
