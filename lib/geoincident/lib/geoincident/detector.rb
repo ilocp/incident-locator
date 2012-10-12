@@ -239,7 +239,7 @@ module Geoincident
       # use the weight-based algorithm
       reports_count = report_count(incident.id)
 
-      if reports_count > 50
+      if reports_count > REPORT_THRESHOLD
         new_position = adjust_by_weight(incident, p_point)
       else
         new_position = adjust_by_number(incident, p_point, reports_count)
