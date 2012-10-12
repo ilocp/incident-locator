@@ -264,12 +264,11 @@ module Geoincident
     # of the line segment
     #
     # Return hash with new position in rads
-    def adjust_by_number(incident, point)
-      reports_for_incident = report_count(incident.id)
+    def adjust_by_number(incident, point, reports_count)
       Trig.n_segment_coordinates(incident.latitude.to_rad,
                                  incident.longitude.to_rad,
                                  point[:lat], point[:lng],
-                                 reports_for_incident - 1)
+                                 reports_count - 1)
     end
 
     # Calculate new position based on a fixed weight
