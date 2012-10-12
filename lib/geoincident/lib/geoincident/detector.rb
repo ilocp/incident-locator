@@ -82,8 +82,8 @@ module Geoincident
 
         attach_to_incident(report, incident)
 
-        if can_adjust_incident_position?(report, incident)
-          adjust_incident_position(report, incident)
+        if can_adjust_incident_location?(report, incident)
+          adjust_incident_location(report, incident)
         end
 
         return true
@@ -104,8 +104,8 @@ module Geoincident
 
         attach_to_incident(report, incident)
 
-        if can_adjust_incident_position?(report, incident)
-          adjust_incident_position(report, incident)
+        if can_adjust_incident_location?(report, incident)
+          adjust_incident_location(report, incident)
         end
       end
     end
@@ -178,7 +178,7 @@ module Geoincident
       true
     end
 
-    def can_adjust_incident_position?(report, incident)
+    def can_adjust_incident_location?(report, incident)
       # avoid duplicate radian conversion
       r_lat = report.latitude.to_rad
       r_lng = report.longitude.to_rad
@@ -192,9 +192,9 @@ module Geoincident
                                        r_lat, r_lng,
                                        dest[:lat], dest[:lng])
 
-      # we can adjust incident position only if angle <= 90
+      # we can adjust incident location only if angle <= 90
       if angle.to_degrees.abs > 90
-        Geoincident.logger.debug "Report #{report.id} is not viable for position adjustment"
+        Geoincident.logger.debug "Report #{report.id} is not viable for location adjustment"
         return false
       end
 
@@ -234,37 +234,37 @@ module Geoincident
                                          dest[:lat], dest[:lng],
                                          i_lat, i_lng)
 
-      # calculate new position
+      # calculate new location
       # If we don't have many reports use the number-based algorithm
       # If we have many reports we need only small adjustments so we
       # use the weight-based algorithm
       reports_count = report_count(incident.id)
 
       if reports_count > REPORT_THRESHOLD
-        Geoincident.logger.debug "Adjusting incident position using weight-based algorithm"
-        new_position = adjust_by_weight(incident, p_point)
+        Geoincident.logger.debug "Adjusting incident location using weight-based algorithm"
+        new_location = adjust_by_weight(incident, p_point)
       else
-        Geoincident.logger.debug "Adjusting incident position using number-based algorithm"
-        new_position = adjust_by_number(incident, p_point, reports_count)
+        Geoincident.logger.debug "Adjusting incident location using number-based algorithm"
+        new_location = adjust_by_number(incident, p_point, reports_count)
       end
 
-      # update position
-      incident.latitude = new_position[:lat].to_degrees
-      incident.longitude = new_position[:lng].to_degrees
+      # update location
+      incident.latitude = new_location[:lat].to_degrees
+      incident.longitude = new_location[:lng].to_degrees
 
       with_incident_logger { incident.save! }
 
-      Geoincident.logger.debug "Incident #{incident.id} position adjust by report #{report.id} "\
+      Geoincident.logger.debug "Incident #{incident.id} location adjusted by report #{report.id} "\
                                "at lat: #{incident.latitude} / lng: #{incident.longitude}"
     end
 
-    # Calculate new position based on the number of previous reports
+    # Calculate new incident location based on the number of previous reports
     #
     # Each subsequent report contributes less from the previous report.
     # If we have 10 reports, we separate the virtual line  segment
     # between the incident (i) and the perpendicular point (p) in 9
     # equal parts. We choose the closest to the incident part as our
-    # new incident position (n).
+    # new incident location (n).
     #
     #  | -- * -- * -- * -- * -- * -- * -- * -- * -- |
     #  i    n                                       p
@@ -275,7 +275,7 @@ module Geoincident
     # * hash which contains lat/lng in rads to act as the second point
     # of the line segment
     #
-    # Return hash with new position in rads
+    # Return hash with new location coordinates in rads
     def adjust_by_number(incident, point, reports_count)
       Trig.n_segment_coordinates(incident.latitude.to_rad,
                                  incident.longitude.to_rad,
@@ -283,7 +283,7 @@ module Geoincident
                                  reports_count - 1)
     end
 
-    # Calculate new position based on a fixed weight
+    # Calculate new location based on a fixed weight
     #
     # What we actually do here is adding a small fixed
     # percent of the line segment length to the incident
@@ -296,7 +296,7 @@ module Geoincident
     # * Optional weight number, if none passed the REPORT_WEIGHT
     # constant will be used
     #
-    # Return hash with new position in rads
+    # Return hash with new location coordinates in rads
     def adjust_by_weight(incident, point, weight=nil)
       weight ||= REPORT_WEIGHT
 
