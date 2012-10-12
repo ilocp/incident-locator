@@ -194,6 +194,7 @@ module Geoincident
 
       # we can adjust incident position only if angle <= 90
       if angle.to_degrees.abs > 90
+        Geoincident.logger.debug "Report #{report.id} is not viable for position adjustment"
         return false
       end
 
@@ -240,8 +241,10 @@ module Geoincident
       reports_count = report_count(incident.id)
 
       if reports_count > REPORT_THRESHOLD
+        Geoincident.logger.debug "Adjusting incident position using weight-based algorithm"
         new_position = adjust_by_weight(incident, p_point)
       else
+        Geoincident.logger.debug "Adjusting incident position using number-based algorithm"
         new_position = adjust_by_number(incident, p_point, reports_count)
       end
 
