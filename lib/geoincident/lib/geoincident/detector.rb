@@ -139,9 +139,9 @@ module Geoincident
                      longitude: lng_range)
     end
 
-    # return the number of reports assigned to the given incident
-    def report_count(incident)
-      Report.where(incident_id: incident.id).count
+    # return the number of reports assigned to the incident with given id
+    def report_count(incident_id)
+      Report.where(incident_id: incident_id).count
     end
 
     # use the bounding box technique to return query limits for coordinates
@@ -233,21 +233,8 @@ module Geoincident
                                          dest[:lat], dest[:lng],
                                          i_lat, i_lng)
 
-      # Calculate new position
-      #
-      # Each subsequent report contributes less from the previous report.
-      # If we have 10 reports, we separate the virtual line  segment
-      # between the incident (i) and the perpendicular point (p) in 9
-      # equal parts. We choose the closest to the incident part as our
-      # new incident position (n).
-      #
-      #  | -- * -- * -- * -- * -- * -- * -- * -- * -- |
-      #  i    n                                       p
-      #
-      reports_for_incident = report_count(incident)
-      new_position = Trig.adjust_by_number(i_lat, i_lng,
-                                           p_point[:lat], p_point[:lng],
-                                           reports_for_incident)
+      # new position using the report number algorithm
+      new_position = Trig.adjust_by_number(incident, p_point)
 
       # update position
       incident.latitude = new_position[:lat].to_degrees
@@ -257,6 +244,32 @@ module Geoincident
 
       Geoincident.logger.debug "Incident #{incident.id} position adjust by report #{report.id} "\
                                "at lat: #{incident.latitude} / lng: #{incident.longitude}"
+    end
+
+    # Calculate new position based on the number of previous reports
+    #
+    # Each subsequent report contributes less from the previous report.
+    # If we have 10 reports, we separate the virtual line  segment
+    # between the incident (i) and the perpendicular point (p) in 9
+    # equal parts. We choose the closest to the incident part as our
+    # new incident position (n).
+    #
+    #  | -- * -- * -- * -- * -- * -- * -- * -- * -- |
+    #  i    n                                       p
+    #
+    #
+    # Parameters:
+    # * incident object which responds in latitude/longitude
+    # * hash which contains lat/lng in rads to act as the second point
+    # of the line segment
+    #
+    # Return hash with new position in rads
+    def adjust_by_number(incident, point)
+      reports_for_incident = report_count(incident.id)
+      Trig.n_segment_coordinates(incident.latitude.to_rad,
+                                 incident.longitude.to_rad,
+                                 point[:lat], point[:lng],
+                                 reports_for_incident - 1)
     end
 
     # use when creating/updating report records

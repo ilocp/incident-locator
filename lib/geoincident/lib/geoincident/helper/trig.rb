@@ -169,19 +169,18 @@ module Geoincident
 
 
     ##
-    # Adjust a position on the map based on a number of previous reports.
+    # Returns the coordinates of the Nth part of a line segment.
     #
-    # This actually returns the coordinates of the Nth part of a line
-    # segment.
     # Line segment is defined by lat1/lng1 and lat2/lng2.
     # If no number is given, assume we want the midpoint.
     # This deprecates the <tt>midpoint</tt> function.
     #
     # IMPORTANT
-    # The lat1/lng1 must correspond to the incident coordinates.
+    # Returns the coordinates of the Nth point which is closer to
+    # lat1/lng1
     #
     # return the new point as hash with keys lat,lng
-    def adjust_by_number(lat1, lng1, lat2, lng2, num=2)
+    def n_segment_coordinates(lat1, lng1, lat2, lng2, n=2)
 
       new_lat = lat1 + ((lat2 - lat1) / n)
       new_lng = lng1 + ((lng2 - lng1) / n)
