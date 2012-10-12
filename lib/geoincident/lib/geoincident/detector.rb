@@ -272,6 +272,29 @@ module Geoincident
                                  reports_for_incident - 1)
     end
 
+    # Calculate new position based on a fixed weight
+    #
+    # What we actually do here is adding a small fixed
+    # percent of the line segment length to the incident
+    # coordinates.
+    #
+    # Parameters:
+    # * incident object which responds in latitude/longitude
+    # * hash which contains lat/lng in rads to act as the second point
+    # of the line segment
+    # * Optional weight number, if none passed the REPORT_WEIGHT
+    # constant will be used
+    #
+    # Return hash with new position in rads
+    def adjust_by_weight(incident, point, weight=nil)
+      weight ||= REPORT_WEIGHT
+
+      new_lat = incident.latitude.to_rad + ( point[:lat] * weight )
+      new_lng = incident.longitude.to_rad + ( point[:lng] * weight )
+
+      { lat: new_lat, lng: new_lng }
+    end
+
     # use when creating/updating report records
     def with_report_logger
       begin
