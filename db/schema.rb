@@ -11,7 +11,21 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121009090234) do
+ActiveRecord::Schema.define(:version => 20121015184552) do
+
+  create_table "assignments", :force => true do |t|
+    t.integer  "role_id"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "grants", :force => true do |t|
+    t.integer  "right_id"
+    t.integer  "role_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "incidents", :force => true do |t|
     t.float    "latitude"
@@ -35,6 +49,19 @@ ActiveRecord::Schema.define(:version => 20121009090234) do
 
   add_index "reports", ["latitude", "longitude"], :name => "index_reports_on_latitude_and_longitude"
   add_index "reports", ["user_id"], :name => "index_reports_on_user_id"
+
+  create_table "rights", :force => true do |t|
+    t.string   "resource"
+    t.string   "operation"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "roles", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email"

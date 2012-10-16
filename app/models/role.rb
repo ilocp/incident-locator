@@ -1,0 +1,25 @@
+# == Schema Information
+#
+# Table name: roles
+#
+#  id         :integer          not null, primary key
+#  name       :string(255)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+class Role < ActiveRecord::Base
+  attr_accessible :name
+
+  has_many :assignments
+  has_many :grants
+
+  has_many :users, :through => :assignments
+  has_many :rights, :through => :grants
+
+  scope :for, lambda { |resource, action|
+                where("rights.operation = ? AND rights.resource = ?",
+                      Right::OPERATION_MAPPINGS[action], resource
+                )
+              }
+end

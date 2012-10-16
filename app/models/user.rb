@@ -22,6 +22,10 @@ class User < ActiveRecord::Base
 
   has_many :reports, dependent: :destroy
 
+  # authorization associations
+  has_many :assignments
+  has_many :roles, :through => :assignments
+
   # we need to be consistent as we use an index on email column
   before_save { |user| user.email = email.downcase }
 
@@ -34,4 +38,7 @@ class User < ActiveRecord::Base
   validates :password, confirmation: true
   validates :password_confirmation, presence: true, length: { minimum: 6 }
 
+  def can?(resource, action)
+    roles.includes(:rights).for(resource, action).any?
+  end
 end
