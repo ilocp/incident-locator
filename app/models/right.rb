@@ -20,13 +20,14 @@ class Right < ActiveRecord::Base
 
   # map all available controller actions to CRUD operations
   OPERATION_MAPPINGS = {
-    new:      'CREATE',
-    create:   'CREATE',
-    edit:     'UPDATE',
-    update:   'UPDATE',
-    destroy:  'DELETE',
-    show:     'READ',
-    index:    'READ',
-    map:      'READ'
+    'new'     => 'CREATE',
+    'create'  => 'CREATE',
+    'edit'    => 'UPDATE',
+    'update'  => 'UPDATE',
+    'destroy' => 'DELETE',
+    'show'    => 'READ',
+    'index'   => 'READ',
+    'map'     => 'READ',
+    'home'    => 'READ'
   }
 end
