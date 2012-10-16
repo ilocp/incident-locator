@@ -20,25 +20,13 @@ class Role < ActiveRecord::Base
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 
   scope :for, lambda { |resource, action|
-
-  # class methods for roles so we can access them fast
-  # * Role.admin
-  # * Role.viewer
-  # * Role.reporter
-
-  def self.admin
-    where(name: 'Admin').first
-  end
-
-  def self.reporter
-    where(name: 'Reporter').first
-  end
-
-  def self.viewer
-    where(name: 'Viewer').first
-  end
     where("rights.operation = ? AND rights.resource = ?",
           Right::OPERATION_MAPPINGS[action], resource
     )
   }
+
+  # define scopes for each role
+  scope :admin, where(name: 'Admin')
+  scope :viewer, where(name: 'Viewer')
+  scope :reporter, where(name: 'Reporter')
 end
