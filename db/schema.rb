@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121015184552) do
+ActiveRecord::Schema.define(:version => 20121016101528) do
 
   create_table "assignments", :force => true do |t|
     t.integer  "role_id"
@@ -20,12 +20,16 @@ ActiveRecord::Schema.define(:version => 20121015184552) do
     t.datetime "updated_at", :null => false
   end
 
+  add_index "assignments", ["user_id", "role_id"], :name => "index_assignments_on_user_id_and_role_id"
+
   create_table "grants", :force => true do |t|
     t.integer  "right_id"
     t.integer  "role_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "grants", ["right_id", "role_id"], :name => "index_grants_on_right_id_and_role_id"
 
   create_table "incidents", :force => true do |t|
     t.float    "latitude"
