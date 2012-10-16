@@ -32,6 +32,7 @@ describe User do
 
   # associations
   it { should respond_to :reports }
+  it { should respond_to :roles }
 
   it { should be_valid }
 

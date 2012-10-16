@@ -15,6 +15,9 @@ class Right < ActiveRecord::Base
   has_many :grants
   has_many :roles, :through => :grants
 
+  validates :resource, presence: true
+  validates :operation, presence: true, uniqueness: { scope: 'resource' }
+
   # map all available controller actions to CRUD operations
   OPERATION_MAPPINGS = {
     new:      'CREATE',

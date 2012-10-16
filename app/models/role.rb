@@ -17,6 +17,8 @@ class Role < ActiveRecord::Base
   has_many :users, :through => :assignments
   has_many :rights, :through => :grants
 
+  validates :name, presence: true, uniqueness: { case_sensitive: false }
+
   scope :for, lambda { |resource, action|
                 where("rights.operation = ? AND rights.resource = ?",
                       Right::OPERATION_MAPPINGS[action], resource
