@@ -8,7 +8,7 @@ rvm:
 env: DB=sqlite
 
 before_script:
-  - bundle exec rake db:migrate db:test:prepare
+  - bundle exec rake db:migrate db:test:prepare db:seed
 
 script: RAILS_ENV=test bundle exec rspec spec
 
