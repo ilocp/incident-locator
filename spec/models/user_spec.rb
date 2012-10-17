@@ -37,6 +37,12 @@ describe User do
   it { should respond_to :reports }
   it { should respond_to :roles }
 
+  # authorization methods
+  it { should respond_to :can? }
+  it { should respond_to :admin? }
+  it { should respond_to :viewer? }
+  it { should respond_to :reporter? }
+
   it { should be_valid }
 
   describe "when name is blank" do
@@ -150,6 +156,32 @@ describe User do
       before { @user.roles = [] }
       it { should_not be_valid }
     end
+  end
+
+  describe "authorization" do
+    before { @user.save }
+
+    describe "role viewer" do
+      before { @user.roles = Role.viewer }
+      it "should have the viewer role assigned" do
+        expect(@user.viewer?).to be_true
+      end
+    end
+
+    describe "role reporter" do
+      before { @user.roles = Role.reporter }
+      it "should have the reporter role assigned" do
+        expect(@user.reporter?).to be_true
+      end
+    end
+
+    describe "role admin" do
+      before { @user.roles = Role.admin }
+      it "should have the admin role assigned" do
+        expect(@user.admin?).to be_true
+      end
+    end
+
   end
 end
 
