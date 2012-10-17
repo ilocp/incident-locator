@@ -37,6 +37,7 @@ class User < ActiveRecord::Base
             uniqueness: { case_sensitive: false }
   validates :password, confirmation: true
   validates :password_confirmation, presence: true, length: { minimum: 6 }
+  validates :roles, presence: true
 
   def can?(resource, action)
     roles.includes(:rights).for(resource, action).any?

@@ -18,8 +18,11 @@ require 'spec_helper'
 
 describe User do
 
-  before { @user = User.new(name: "Tets User", email: "test@example.com",
-                            password: "foobar", password_confirmation: "foobar") }
+  before do
+    @user = User.new(name: "Tets User", email: "test@example.com",
+                     password: "foobar", password_confirmation: "foobar")
+    @user.roles = Role.viewer
+  end
 
   subject { @user }
 
@@ -77,6 +80,7 @@ describe User do
       user_already_on_db = @user.dup
       # set address to upcase to test for case sensitivity
       user_already_on_db.email = @user.email.upcase
+      user_already_on_db.roles = Role.viewer
       user_already_on_db.save
     end
     it { should_not be_valid }
@@ -114,30 +118,37 @@ describe User do
     end
   end
 
-  describe "report associations" do
+  describe "association" do
+    describe "report" do
 
-    # we want to return user reports in reverse chronological order
-    # in user profiles
-    before { @user.save }
-    let!(:old_report) do
-      FactoryGirl.create(:report, user: @user, created_at: 1.day.ago)
-    end
-
-    let!(:new_report) do
-      FactoryGirl.create(:report, user: @user, created_at: 1.hour.ago)
-    end
-
-    it "should return newer report first" do
-      @user.reports.should == [new_report, old_report]
-    end
-
-    # remove reports when deleting user
-    it "should destroy associated reports" do
-      reports = @user.reports
-      @user.destroy
-      reports.each do |report|
-        Report.find_by_id(report.id).should be_nil
+      # we want to return user reports in reverse chronological order
+      # in user profiles
+      before { @user.save }
+      let!(:old_report) do
+        FactoryGirl.create(:report, user: @user, created_at: 1.day.ago)
       end
+
+      let!(:new_report) do
+        FactoryGirl.create(:report, user: @user, created_at: 1.hour.ago)
+      end
+
+      it "should return newer report first" do
+        @user.reports.should == [new_report, old_report]
+      end
+
+      # remove reports when deleting user
+      it "should destroy associated reports" do
+        reports = @user.reports
+        @user.destroy
+        reports.each do |report|
+          Report.find_by_id(report.id).should be_nil
+        end
+      end
+    end
+
+    describe "role" do
+      before { @user.roles = [] }
+      it { should_not be_valid }
     end
   end
 end
