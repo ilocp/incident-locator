@@ -75,8 +75,14 @@ describe "User pages" do
         before { click_button submit }
         let(:user) { User.find_by_email('test@example.com') }
 
-        it { should have_h1(user.name) }
-        it { should have_signout_link }
+        describe "user should be logged in" do
+          it { should have_h1(user.name) }
+          it { should have_signout_link }
+        end
+
+        describe "user must have the viewer role assigned" do
+          it { expect(user.roles).to eq(Role.viewer) }
+        end
       end
     end
   end
