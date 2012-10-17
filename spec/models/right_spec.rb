@@ -35,6 +35,7 @@ describe Right do
 
   describe "with multiple entries" do
     before { @right.save }
+    after(:all) { @right.destroy }
 
     describe "with duplicate resource-operation combination" do
       before { @right2 = @right.dup }
