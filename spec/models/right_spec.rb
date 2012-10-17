@@ -42,7 +42,7 @@ describe Right do
       it { @right2.should_not be_valid }
     end
 
-    describe "with different resource-operation combinatio" do
+    describe "with different resource-operation combination" do
       before do
         @right2 = @right.dup
         @right2.resource = 'test2'
