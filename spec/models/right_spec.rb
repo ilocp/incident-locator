@@ -12,7 +12,7 @@
 require 'spec_helper'
 
 describe Right do
-  before { @right = Right.new(resource: 'users', operation: 'READ') }
+  before { @right = Right.new(resource: 'test', operation: 'READ') }
   subject { @right}
 
   it { should respond_to :resource }
@@ -44,7 +44,7 @@ describe Right do
     describe "with different resource-operation combinatio" do
       before do
         @right2 = @right.dup
-        @right2.resource = :incidents
+        @right2.resource = 'test2'
       end
       it { @right2.should be_valid }
     end
