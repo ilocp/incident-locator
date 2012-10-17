@@ -42,4 +42,24 @@ class User < ActiveRecord::Base
   def can?(resource, action)
     roles.includes(:rights).for(resource, action).any?
   end
+
+  # permissions overlap
+  # this means that admin is a superset of the permissions of a repotert
+  # which in turn is a superset of the viewer role
+  #
+  # due to the above decision an admin user have admin role and also inherit the
+  # reporter permissions
+  #
+  def admin?
+    roles.admin.exists?
+  end
+
+  def reporter?
+    roles.where(name: ['Reporter', 'Admin']).exists?
+  end
+
+  def viewer?
+    roles.where(name: ['Viewer', 'Reporter', 'Admin']).exists?
+  end
+
 end
