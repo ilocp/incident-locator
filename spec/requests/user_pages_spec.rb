@@ -5,7 +5,7 @@ describe "User pages" do
   subject { page }
 
   describe "users page" do
-    let(:user) { FactoryGirl.create(:user) }
+    let(:user) { FactoryGirl.create(:reporter) }
     before do
       sign_in user
       visit users_path
@@ -15,7 +15,7 @@ describe "User pages" do
   end
 
   describe "profile page" do
-    let(:user) { FactoryGirl.create(:user) }
+    let(:user) { FactoryGirl.create(:reporter) }
 
     let!(:r1) { FactoryGirl.create(:report, user: user, latitude: 19.0943141,
                                    longitude: 87.9875209) }
