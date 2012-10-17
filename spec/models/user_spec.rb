@@ -105,7 +105,7 @@ describe User do
       it { should == retrieved_user.authenticate(@user.password) }
     end
 
-    describe "when passwowrd is not correct" do
+    describe "when password is not correct" do
       # we use this user object more than once
       let(:user_with_invalid_password) { retrieved_user.authenticate("invalid") }
 
