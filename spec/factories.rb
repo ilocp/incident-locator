@@ -5,6 +5,14 @@ FactoryGirl.define do
     password "foobar"
     password_confirmation "foobar"
     roles Role.viewer
+
+    factory :reporter do
+      roles Role.reporter
+    end
+
+    factory :admin do
+      roles Role.admin
+    end
   end
 
   factory :report do
