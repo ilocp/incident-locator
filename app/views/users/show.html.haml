@@ -8,12 +8,15 @@
 
 %h2= 'Incident reports'
 .reports
-  %table.table.table-striped.table-bordered
-    -#%caption 'List of all incident reports made by user'
-    %thead
-      %tr
-        %th= 'Latitude'
-        %th= 'Longitude'
-        %th= 'Heading'
-    %tbody
-      = render @reports
+  - if @user.reporter? or @user.admin?
+    %table.table.table-striped.table-bordered
+      -#%caption 'List of all incident reports made by user'
+      %thead
+        %tr
+          %th= 'Latitude'
+          %th= 'Longitude'
+          %th= 'Heading'
+      %tbody
+        = render @reports
+  - else
+    %div= "No reports. Your don't have permissions to post reports"

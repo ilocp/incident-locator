@@ -5,7 +5,7 @@ describe "User pages" do
   subject { page }
 
   describe "users page" do
-    let(:user) { FactoryGirl.create(:user) }
+    let(:user) { FactoryGirl.create(:reporter) }
     before do
       sign_in user
       visit users_path
@@ -15,7 +15,7 @@ describe "User pages" do
   end
 
   describe "profile page" do
-    let(:user) { FactoryGirl.create(:user) }
+    let(:user) { FactoryGirl.create(:reporter) }
 
     let!(:r1) { FactoryGirl.create(:report, user: user, latitude: 19.0943141,
                                    longitude: 87.9875209) }
@@ -75,8 +75,14 @@ describe "User pages" do
         before { click_button submit }
         let(:user) { User.find_by_email('test@example.com') }
 
-        it { should have_h1(user.name) }
-        it { should have_signout_link }
+        describe "user should be logged in" do
+          it { should have_h1(user.name) }
+          it { should have_signout_link }
+        end
+
+        describe "user must have the viewer role assigned" do
+          it { expect(user.roles).to eq(Role.viewer) }
+        end
       end
     end
   end

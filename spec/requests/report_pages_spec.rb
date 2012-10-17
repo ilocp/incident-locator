@@ -4,7 +4,7 @@ describe "Report pages" do
 
   subject { page }
 
-  let(:user) { FactoryGirl.create(:user) }
+  let(:user) { FactoryGirl.create(:reporter) }
   let(:submit) { 'Create report' }
   before { sign_in user }
 
