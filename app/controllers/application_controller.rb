@@ -13,7 +13,11 @@ class ApplicationController < ActionController::Base
     if current_user
       unless current_user.can?(controller_name, action_name)
         flash[:error] = 'You are not authorized to access this page'
-        redirect_to :back
+
+        respond_to do |format|
+          format.html { redirect_to :back }
+          format.json { render json: { status: 403, msg: flash[:error] } }
+        end
       end
     end
   end
