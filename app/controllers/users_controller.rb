@@ -12,7 +12,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html # -> show.html.haml
-      format.json { render json: @user }
+      format.json { render json: @user, only: [:name, :email] }
     end
   end
 
