@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
 
         respond_to do |format|
           format.html { redirect_to :back }
-          format.json { render json: { status: 403, msg: flash[:error] } }
+          format.json { render json: { msg: flash[:error] }, status: :forbidden }
         end
       end
     end

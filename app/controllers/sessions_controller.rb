@@ -12,16 +12,16 @@ class SessionsController < ApplicationController
 
         format.html { redirect_back_or user }
 
-        json_response = { status: 200, msg: 'Authentication successful' }
-        format.json { render json: json_response }
+        json_response = { msg: 'Authentication successful' }
+        format.json { render json: json_response, status: :ok }
       else
         flash.now[:error] = 'Invalid email/password combination'
 
         #avoid doing a new request with redirect_to
         format.html { render 'new' }
 
-        json_response = { status: 403, msg: flash.now[:error] }
-        format.json { render json: json_response }
+        json_response = { msg: flash.now[:error] }
+        format.json { render json: json_response, status: :forbidden }
       end
     end
   end
