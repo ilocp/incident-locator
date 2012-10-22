@@ -16,7 +16,7 @@ module Api
         #
         Geoincident::process(@report)
 
-        respond_with({ msg: 'Report created successfully' }, status: :ok,
+        respond_with({ msg: 'Report created successfully' }, status: :created,
                      location: nil)
       else
         respond_with({ msg: 'Could not save report' }, status: :bad_request,
