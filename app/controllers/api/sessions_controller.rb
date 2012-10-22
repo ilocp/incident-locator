@@ -11,7 +11,7 @@ module Api
         # set a crsf token in the response headers for the current session
         # every POST/PUT/DELETE request using the API must supplie this to
         # be considered valid
-        response.headers['X-CSRF-Token'] = form_authenticity_token.to_s
+        response.headers['X-CSRF-Token'] = form_authenticity_token
 
         respond_with({ msg: 'Authentication successful' }, status: :ok, location: nil)
       else
