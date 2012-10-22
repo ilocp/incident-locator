@@ -7,6 +7,7 @@ class ReportsController < ApplicationController
 
   def create
     @report = current_user.reports.build(params[:report])
+
     if @report.save
 
       # detect possible incidents from this report
@@ -18,6 +19,7 @@ class ReportsController < ApplicationController
       Geoincident::process(@report)
 
       flash[:success] = 'Report created successfully'
+
       redirect_to current_user
     else
       render 'new'
