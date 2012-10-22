@@ -9,11 +9,6 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @reports = @user.reports
-
-    respond_to do |format|
-      format.html # -> show.html.haml
-      format.json { render json: @user, only: [:name, :email] }
-    end
   end
 
   def new

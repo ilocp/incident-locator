@@ -69,4 +69,9 @@ IncidentLocator::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
+  namespace :api, defaults: { format: 'json' } do
+    match 'signin' => 'sessions#create', :via => :post
+    match 'profile' => 'users#show', :via => :get
+    match 'report' => 'reports#create', :via => :post
+  end
 end
