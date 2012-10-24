@@ -189,12 +189,29 @@ module Geoincident
     end
 
     ##
-    # Calculate angle between 2 lines defined by 3 points
+    # Calculate angle between 3 points
+    #
+    # Assuming we have 3 points ABC with a pair of lat/lng each
+    # then:
+    #
+    # Ax = lng1
+    # Ay = lat1
+    #
+    # etc..
     #
     # return angle in radians
-    def angle_between_lines(lat1, lng1, lat2, lng2, lat3, lng3)
-      angle1 = Math.atan2(lng1 - lng2, lat1 - lat2)
-      angle2 = Math.atan2(lng2 - lng3, lat2 - lat3)
+    def angle_between_3points(lat1, lng1, lat2, lng2, lat3, lng3)
+
+      # L1 is the line defined by AB
+      # L2 is the line defined by CB
+      l1x = lng2 - lng1
+      l1y = lat2 - lat1
+
+      l2x = lng2 - lng3
+      l2y = lat2 - lat3
+
+      angle1 = Math.atan2(l1y, l1x)
+      angle2 = Math.atan2(l2y, l2x)
 
       angle1 - angle2
     end

@@ -187,10 +187,10 @@ module Geoincident
       dest = Trig.destination_point(r_lat, r_lng, report.heading.to_rad,
                                     VISIBILITY_RADIUS)
 
-      angle = Trig.angle_between_lines(incident.latitude.to_rad,
-                                       incident.longitude.to_rad,
-                                       r_lat, r_lng,
-                                       dest[:lat], dest[:lng])
+      angle = Trig.angle_between_3points(incident.latitude.to_rad,
+                                         incident.longitude.to_rad,
+                                         r_lat, r_lng,
+                                         dest[:lat], dest[:lng])
 
       # we can adjust incident location only if angle <= 90
       if angle.to_degrees.abs > 90
