@@ -52,7 +52,7 @@ Spork and guard are also configured. To run guard (loads spork automatically) ru
 if you want to run some rspec test with the spork instance that already runs on
 guard run:
 
-    $ bundle exec rspect spec/ --drb
+    $ bundle exec rspec spec/ --drb
 
 
 License
