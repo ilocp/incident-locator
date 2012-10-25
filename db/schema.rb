@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121016101528) do
+ActiveRecord::Schema.define(:version => 20121025091927) do
 
   create_table "assignments", :force => true do |t|
     t.integer  "role_id"
@@ -35,8 +35,9 @@ ActiveRecord::Schema.define(:version => 20121016101528) do
     t.float    "latitude"
     t.float    "longitude"
     t.float    "radius"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+    t.integer  "reports_count", :default => 0
   end
 
   add_index "incidents", ["latitude", "longitude"], :name => "index_incidents_on_latitude_and_longitude"

@@ -2,12 +2,13 @@
 #
 # Table name: incidents
 #
-#  id         :integer          not null, primary key
-#  latitude   :float
-#  longitude  :float
-#  radius     :float
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id            :integer          not null, primary key
+#  latitude      :float
+#  longitude     :float
+#  radius        :float
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  reports_count :integer          default(0)
 #
 # Indexes
 #
