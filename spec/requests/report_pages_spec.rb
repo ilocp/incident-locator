@@ -90,7 +90,7 @@ describe "Report pages" do
         click_button submit
       end
 
-      it "should adjust the incident location" do
+      it "should adjust the incident coordinates" do
         adj_incident = Incident.find_by_id incident.id
         expect(adj_incident.latitude).not_to eq(incident.latitude)
         expect(adj_incident.longitude).not_to eq(incident.longitude)
