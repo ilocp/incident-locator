@@ -70,7 +70,7 @@ describe "Report pages" do
   # this test needs at least 2 reports assigned to the incident
   # else the detector algorithm will fail because we use the report
   # number as an adjustment weight
-  describe "report attachment to incident" do
+  describe "new report attachment on the same area" do
     let(:incident) { FactoryGirl.create(:incident, latitude: 38.0388329,
                                         longitude: 24.3521278, radius: 3000.0) }
     let(:report1) { FactoryGirl.create(:report, user: user) }
@@ -81,7 +81,7 @@ describe "Report pages" do
       incident.reports << report2
     end
 
-    describe "incident location adjustment" do
+    describe "location adjustment" do
       before do
         visit new_report_path
         fill_in "Latitude", with: 38.044540
