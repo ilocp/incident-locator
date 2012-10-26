@@ -96,5 +96,55 @@ describe "Report pages" do
         expect(adj_incident.longitude).not_to eq(incident.longitude)
       end
     end
+
+    describe "report counter cache" do
+      let(:report) { FactoryGirl.create(:report, user: user) }
+
+      describe "when we assign report to incident" do
+        it "should increase the reports counter for that incident" do
+          incident.reload
+          reports_count = incident.reports_count
+          incident.reports << report
+          incident.reload
+          expect(incident.reports_count).to eq(reports_count + 1)
+        end
+      end
+
+      describe "when we unassign report from incident" do
+        it "should decrease the reports counter for that incident" do
+          incident.reports << report
+          incident.reload
+          reports_count = incident.reports_count
+
+          # we use update attribute because we test the callback
+          report.update_attribute(:incident_id, nil)
+          incident.reload
+          expect(incident.reports_count).to eq(reports_count - 1)
+        end
+      end
+
+      describe "when we reparent reports" do
+        let!(:new_incident) { FactoryGirl.create(:incident) }
+
+        it "should decrease counter on old and increase counter on new incident" do
+          # assign report to old incident and get counters
+          incident.reports << report
+          incident.reload
+          old_reports_count = incident.reports_count
+
+          # re-assign the report to the new incident
+          new_reports_count = new_incident.reports_count
+          new_incident.reports << report
+
+          # reload to get fresh counters
+          new_incident.reload
+          incident.reload
+
+          expect(incident.reports_count).to eq(old_reports_count - 1)
+          expect(new_incident.reports_count).to eq(new_reports_count + 1)
+        end
+      end
+    end
+
   end
 end
