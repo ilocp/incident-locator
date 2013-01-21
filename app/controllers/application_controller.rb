@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
         flash[:error] = 'You are not authorized to access this page'
 
         respond_to do |format|
-          format.html { redirect_to :back }
+          format.html { redirect_back_or root_path }
           format.json { render json: { msg: flash[:error] }, status: :forbidden }
         end
       end

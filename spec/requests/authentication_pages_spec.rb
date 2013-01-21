@@ -164,12 +164,17 @@ describe "Authentication" do
         describe "when visiting report pages" do
 
           describe "operation CREATE" do
-            before { visit new_report_path }
+            before do
+              #request.env["HTTP_REFERER"] = root_path
+              #visit new_report_path
+              get new_report_path, { "HTTP_REFERER" => root_path }
+            end
 
             it "should not allow access" do
               # we should have been redirected to :back (root_path)
+              #page.should have_error_msg('not authorized')
+              page.should have_signout_link
               expect(current_path).to eq(root_path)
-              page.should have_error_msg('not authorized')
             end
           end
 
