@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   def authorize
     if current_user
       unless current_user.can?(controller_name, action_name)
-        flash[:error] = 'You are not authorized to access this page'
+        flash[:error] = 'You are not authorized to complete this action'
 
         respond_to do |format|
           format.html { redirect_back_or root_path }
