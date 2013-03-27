@@ -2,9 +2,9 @@ IncidentLocator::Application.routes.draw do
   resources :users
 
   # log{in,out}
-  resources :sessions, only: [:create]
-  match 'signin' => 'sessions#new', :via => :get
-  match 'signout' => 'sessions#destroy', :via => :delete
+  resources :sessions, only: [:new, :create, :destroy]
+  match 'signin', to: 'sessions#new'
+  match 'signout', to: 'sessions#destroy', :via => :delete
 
   # reports
   resources :reports, only: [:new, :create]
@@ -12,6 +12,8 @@ IncidentLocator::Application.routes.draw do
   # incidents
   resources :incidents, only: [:index]
   match 'map' => 'incidents#map', :via => :get
+
+  root to: 'static_pages#home'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -59,10 +61,6 @@ IncidentLocator::Application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
-
-  # You can have the root of your site routed with "root"
-  # just remember to delete public/index.html.
-  root :to => 'static_pages#home'
 
   # See how all your routes lay out with "rake routes"
 
