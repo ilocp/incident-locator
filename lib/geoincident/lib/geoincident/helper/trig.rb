@@ -21,6 +21,12 @@ module Geoincident
     # https://developers.google.com/maps/documentation/javascript/reference#spherical
     R = 6378137
 
+    # set some helper constants defining coordinate limits
+    LAT_MIN = -90.to_rad
+    LAT_MAX = 90.to_rad
+    LNG_MIN = -180.to_rad
+    LNG_MAX = 180.to_rad
+
     ##
     # Uses the haversine formula to calculate the distance between 2 points.
     #
@@ -119,9 +125,9 @@ module Geoincident
     # return point as hash with keys: lat, lng
     def destination_point(lat, lng, h, distance=1500)
 
-      angular_distance = distance.to_f / R
-      cos_angular = Math.cos(angular_distance)
-      sin_angular = Math.sin(angular_distance)
+      d_angular = angular_distance(distance)
+      cos_angular = Math.cos(d_angular)
+      sin_angular = Math.sin(d_angular)
 
       new_lat = Math.asin(Math.sin(lat) * cos_angular +
                           Math.cos(lat) * sin_angular * Math.cos(h))
@@ -161,15 +167,94 @@ module Geoincident
       { lat: new_lat, lng: new_lng }
     end
 
+
     ##
-    # Calculate angle between 2 lines defined by 3 points
+    # Returns the coordinates of the Nth part of a line segment.
+    #
+    # Line segment is defined by lat1/lng1 and lat2/lng2.
+    # If no number is given, assume we want the midpoint.
+    # This deprecates the <tt>midpoint</tt> function.
+    #
+    # IMPORTANT
+    # Returns the coordinates of the Nth point which is closer to
+    # lat1/lng1
+    #
+    # return the new point as hash with keys lat,lng
+    def n_segment_coordinates(lat1, lng1, lat2, lng2, n=2)
+
+      new_lat = lat1 + ((lat2 - lat1) / n)
+      new_lng = lng1 + ((lng2 - lng1) / n)
+
+      { lat: new_lat, lng: new_lng }
+    end
+
+    ##
+    # Calculate angle between 3 points
+    #
+    # Assuming we have 3 points ABC with a pair of lat/lng each
+    # then:
+    #
+    # Ax = lng1
+    # Ay = lat1
+    #
+    # etc..
     #
     # return angle in radians
-    def angle_between_lines(lat1, lng1, lat2, lng2, lat3, lng3)
-      angle1 = Math.atan2(lng1 - lng2, lat1 - lat2)
-      angle2 = Math.atan2(lng2 - lng3, lat2 - lat3)
+    def angle_between_3points(lat1, lng1, lat2, lng2, lat3, lng3)
+
+      # L1 is the line defined by AB
+      # L2 is the line defined by CB
+      l1x = lng2 - lng1
+      l1y = lat2 - lat1
+
+      l2x = lng2 - lng3
+      l2y = lat2 - lat3
+
+      angle1 = Math.atan2(l1y, l1x)
+      angle2 = Math.atan2(l2y, l2x)
 
       angle1 - angle2
+    end
+
+    # calculate angular distnace using earth's radius
+    def angular_distance(distance)
+      distance.to_f / R
+    end
+
+    ##
+    # calculate a bounding rectangle containing the circle defined
+    # by `lat`, `lng` and radius `distance`
+    # source: http://janmatuschek.de/LatitudeLongitudeBoundingCoordinates
+    #
+    # return 2 points which represent the rectangle's opposite corners
+    def bounding_box(lat, lng, distance)
+      d_angular = angular_distance(distance)
+
+      lat_min = lat - d_angular
+      lat_max = lat + d_angular
+
+      if lat_min > LAT_MIN and lat_max < LAT_MAX
+        d_lng = Math.asin(Math.sin(d_angular) / Math.cos(lat))
+
+        lng_min = lng - d_lng
+
+        if lng_min < LNG_MIN
+          lng_min += 2.0 * Math::PI
+        end
+
+        lng_max = lng + d_lng
+
+        if lng_max > LNG_MAX
+          lng_max -= 2.0 * Math::PI
+        end
+      else
+        lat_min = [lat_min, LAT_MIN].min
+        lat_max = [lat_max, LAT_MAX].max
+        lng_min = LNG_MIN
+        lng_max = LNG_MAX
+      end
+
+      { lat_min: lat_min, lng_min: lng_min, lat_max: lat_max, lng_max: lng_max }
     end
   end
 end

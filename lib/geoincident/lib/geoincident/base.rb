@@ -1,5 +1,6 @@
 module Geoincident
 
+  require 'geoincident/logger'
   require 'geoincident/version'
   require 'geoincident/detector'
 
@@ -10,6 +11,8 @@ module Geoincident
   #autoload :ActsAsIncident,     'geoincident/acts_as_incident'
 
   def Geoincident::process(report)
+    Geoincident.logger.debug "Incident detection process started on #{Time.now}"
+
     detector = Detector.new
 
     # check if we can attach this report to an existing incident
@@ -27,6 +30,7 @@ module Geoincident
         detector.scan_reports(new_incident)
       end
     end
+    Geoincident.logger.debug "Incident detection process ended on #{Time.now}"
   end
 
 end

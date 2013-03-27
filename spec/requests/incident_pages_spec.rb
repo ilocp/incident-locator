@@ -18,6 +18,7 @@ describe "Incident pages" do
     it { should have_content(incident.latitude) }
     it { should have_content(incident.longitude) }
     it { should have_content(incident.radius) }
+    it { should have_content(incident.reports.size) }
   end
 
   describe "map" do

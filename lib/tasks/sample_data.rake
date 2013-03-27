@@ -5,10 +5,12 @@ namespace :db do
       name  = Faker::Name.name
       email = "user#{n+1}@example.com"
       password  = "password"
-      User.create!(name: name,
+      u = User.create!(name: name,
                    email: email,
                    password: password,
                    password_confirmation: password)
+
+      u.roles = Role.viewer
     end
 
     # add 20 reports to the first 10 users

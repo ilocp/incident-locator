@@ -2,12 +2,17 @@
 #
 # Table name: incidents
 #
-#  id         :integer          not null, primary key
-#  latitude   :float
-#  longitude  :float
-#  radius     :float
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id            :integer          not null, primary key
+#  latitude      :float
+#  longitude     :float
+#  radius        :float
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  reports_count :integer          default(0)
+#
+# Indexes
+#
+#  index_incidents_on_latitude_and_longitude  (latitude,longitude)
 #
 
 class Incident < ActiveRecord::Base
@@ -24,5 +29,7 @@ class Incident < ActiveRecord::Base
   validates :latitude, presence: true, numericality: true, latitude: true
   validates :longitude, presence: true, numericality: true, longitude: true
   validates :radius, presence: true, numericality: { greater_than: 0 }
+
+  default_scope order: 'incidents.updated_at DESC'
 
 end

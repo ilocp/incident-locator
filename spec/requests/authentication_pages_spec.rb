@@ -149,5 +149,45 @@ describe "Authentication" do
       end
     end
 
+    describe "with role-based permissions" do
+      let!(:return_url) { 'some_path' }
+
+      describe "as role viewer" do
+        let!(:viewer) { FactoryGirl.create(:user) }
+        before do
+          sign_in viewer
+
+          # visit a path that simple users have access
+          visit root_path
+        end
+
+        describe "when visiting report pages" do
+
+          describe "operation CREATE" do
+            before do
+              #request.env["HTTP_REFERER"] = root_path
+              #visit new_report_path
+              get new_report_path, { "HTTP_REFERER" => root_path }
+            end
+
+            it "should not allow access" do
+              # we should have been redirected to :back (root_path)
+              #page.should have_error_msg('not authorized')
+              page.should have_signout_link
+              expect(current_path).to eq(root_path)
+            end
+          end
+
+          describe "embedded reports in profile page" do
+            before { visit user_path(viewer) }
+            it "should show message about not sufficient permissions" do
+              page.should have_content("No reports. Your don't have permissions")
+            end
+          end
+
+        end
+      end
+    end
+
   end
 end

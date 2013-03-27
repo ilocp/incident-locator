@@ -8,7 +8,7 @@ module Geoincident
     # TODO: don't hardcode models
 
     def detect_new_incident(reference_report)
-      orphans = get_orphan_reports
+      orphans = get_orphan_reports(reference_report)
 
       incident = nil
       orphans.each do |report|
@@ -52,6 +52,9 @@ module Geoincident
             incident.save!
           end
 
+          Geoincident.logger.debug "Reports with IDs #{reference_report.id} and #{report.id} "\
+                                   "created new incident with data: #{incident_data.to_s}"
+
           # attach these reports to the new incident
           attach_to_incident(reference_report, incident)
           attach_to_incident(report, incident)
@@ -70,7 +73,7 @@ module Geoincident
     # Search all active incidents and determine if given
     # report should belong to it
     def scan_incidents(report)
-      active_incidents = get_active_incidents
+      active_incidents = get_active_incidents(report)
 
       active_incidents.each do |incident|
         unless belongs_to_incident?(report, incident)
@@ -79,8 +82,8 @@ module Geoincident
 
         attach_to_incident(report, incident)
 
-        if can_adjust_incident_position?(report, incident)
-          adjust_incident_position(report, incident)
+        if can_adjust_incident_location?(report, incident)
+          adjust_incident_location(report, incident)
         end
 
         return true
@@ -92,7 +95,7 @@ module Geoincident
     # Search all orphan reports and determine if any of them
     # should be attached to the given incident
     def scan_reports(incident)
-      orphan_reports = get_orphan_reports
+      orphan_reports = get_orphan_reports(incident)
 
       orphan_reports.each do |report|
         unless belongs_to_incident?(report, incident)
@@ -101,8 +104,8 @@ module Geoincident
 
         attach_to_incident(report, incident)
 
-        if can_adjust_incident_position?(report, incident)
-          adjust_incident_position(report, incident)
+        if can_adjust_incident_location?(report, incident)
+          adjust_incident_location(report, incident)
         end
       end
     end
@@ -111,15 +114,53 @@ module Geoincident
 
     # Return all orphan reports, namely all records with nil incident_id
     # by default all reports created/updated 2 days ago are considered
-    def get_orphan_reports(date_range=nil)
+    def get_orphan_reports(location, date_range=nil, query_radius=nil)
+      # FIXME see if 2 days is too old
       date_range ||= 2.days.ago...Time.now
-      Report.where(incident_id: nil, updated_at: date_range)
+      query_radius ||= Geoincident::QUERY_CIRCLE_RADIUS
+
+      # get coordinate ranges which include our candidate reports
+      lat_range, lng_range = query_ranges(location, query_radius)
+
+      Report.where(incident_id: nil, updated_at: date_range,
+                   latitude: lat_range, longitude: lng_range)
     end
 
     # Return all incidents considered as active
-    def get_active_incidents(date_range=nil)
+    def get_active_incidents(location, date_range=nil, query_radius=nil)
+      # FIXME see if 2 days is too old
       date_range ||= 2.days.ago...Time.now
-      Incident.where(updated_at: date_range)
+      query_radius ||= Geoincident::QUERY_CIRCLE_RADIUS
+
+      # get coordinate ranges which include our candidate reports
+      lat_range, lng_range = query_ranges(location, query_radius)
+
+      Incident.where(updated_at: date_range, latitude: lat_range,
+                     longitude: lng_range)
+    end
+
+    # return the number of reports assigned to the incident with given id
+    def report_count(incident_id)
+      Report.where(incident_id: incident_id).count
+    end
+
+    # use the bounding box technique to return query limits for coordinates
+    # returns two range objects one for latitude and one for longitude
+    # +location+ must respond to latitude and longitude methods
+    # +radius+ must be in meters
+    def query_ranges(location, radius)
+      box = Trig.bounding_box(location.latitude.to_rad,
+                              location.longitude.to_rad,
+                              radius)
+
+      Geoincident.logger.debug "Calculated bounding box with coordinates: "\
+                               "min: [#{box[:lat_min].to_degrees} / #{box[:lng_min].to_degrees}] "\
+                               "max: [#{box[:lat_max].to_degrees} / #{box[:lng_max].to_degrees}]"
+
+      lat_range = box[:lat_min].to_degrees..box[:lat_max].to_degrees
+      lng_range = box[:lng_min].to_degrees..box[:lng_max].to_degrees
+
+      [lat_range, lng_range]
     end
 
     # Check if given report should belong to incident
@@ -137,7 +178,7 @@ module Geoincident
       true
     end
 
-    def can_adjust_incident_position?(report, incident)
+    def can_adjust_incident_location?(report, incident)
       # avoid duplicate radian conversion
       r_lat = report.latitude.to_rad
       r_lng = report.longitude.to_rad
@@ -146,13 +187,14 @@ module Geoincident
       dest = Trig.destination_point(r_lat, r_lng, report.heading.to_rad,
                                     VISIBILITY_RADIUS)
 
-      angle = Trig.angle_between_lines(incident.latitude.to_rad,
-                                       incident.longitude.to_rad,
-                                       r_lat, r_lng,
-                                       dest[:lat], dest[:lng])
+      angle = Trig.angle_between_3points(incident.latitude.to_rad,
+                                         incident.longitude.to_rad,
+                                         r_lat, r_lng,
+                                         dest[:lat], dest[:lng])
 
-      # we can adjust incident position only if angle <= 90
+      # we can adjust incident location only if angle <= 90
       if angle.to_degrees.abs > 90
+        Geoincident.logger.debug "Report #{report.id} is not viable for location adjustment"
         return false
       end
 
@@ -164,6 +206,7 @@ module Geoincident
       with_report_logger do
         report.incident_id = incident.id
         report.save!
+        Geoincident.logger.debug "Report #{report.id} attached to incident #{incident.id}"
       end
     end
 
@@ -187,21 +230,80 @@ module Geoincident
       # calculate the point where the previous virtual line
       # is perpendicular with a virtual line passing from the
       # incident location
-      p_point = Tring.perpendicular_point(r_lat, r_lng,
-                                          dest[:lat], dest[:lng],
-                                          i_lat, i_lng)
+      p_point = Trig.perpendicular_point(r_lat, r_lng,
+                                         dest[:lat], dest[:lng],
+                                         i_lat, i_lng)
 
-      # calculate new position
-      # namely, the midpoint of the line passing from incident and the
-      # perpendicular line point
-      new_position = Trig.midpoint(i_lat, i_lng,
-                                   p_point[:lat], p_point[:lng])
+      # calculate new location
+      # If we don't have many reports use the number-based algorithm
+      # If we have many reports we need only small adjustments so we
+      # use the weight-based algorithm
+      reports_count = report_count(incident.id)
 
-      # update position
-      incident.latitude = new_position[:lat].to_degrees
-      incident.longitude = new_position[:lng].to_degrees
+      if reports_count > REPORT_THRESHOLD
+        Geoincident.logger.debug "Adjusting incident location using weight-based algorithm"
+        new_location = adjust_by_weight(incident, p_point)
+      else
+        Geoincident.logger.debug "Adjusting incident location using number-based algorithm"
+        new_location = adjust_by_number(incident, p_point, reports_count)
+      end
+
+      # update location
+      incident.latitude = new_location[:lat].to_degrees
+      incident.longitude = new_location[:lng].to_degrees
 
       with_incident_logger { incident.save! }
+
+      Geoincident.logger.debug "Incident #{incident.id} location adjusted by report #{report.id} "\
+                               "at lat: #{incident.latitude} / lng: #{incident.longitude}"
+    end
+
+    # Calculate new incident location based on the number of previous reports
+    #
+    # Each subsequent report contributes less from the previous report.
+    # If we have 10 reports, we separate the virtual line  segment
+    # between the incident (i) and the perpendicular point (p) in 9
+    # equal parts. We choose the closest to the incident part as our
+    # new incident location (n).
+    #
+    #  | -- * -- * -- * -- * -- * -- * -- * -- * -- |
+    #  i    n                                       p
+    #
+    #
+    # Parameters:
+    # * incident object which responds in latitude/longitude
+    # * hash which contains lat/lng in rads to act as the second point
+    # of the line segment
+    #
+    # Return hash with new location coordinates in rads
+    def adjust_by_number(incident, point, reports_count)
+      Trig.n_segment_coordinates(incident.latitude.to_rad,
+                                 incident.longitude.to_rad,
+                                 point[:lat], point[:lng],
+                                 reports_count - 1)
+    end
+
+    # Calculate new location based on a fixed weight
+    #
+    # What we actually do here is adding a small fixed
+    # percent of the line segment length to the incident
+    # coordinates.
+    #
+    # Parameters:
+    # * incident object which responds in latitude/longitude
+    # * hash which contains lat/lng in rads to act as the second point
+    # of the line segment
+    # * Optional weight number, if none passed the REPORT_WEIGHT
+    # constant will be used
+    #
+    # Return hash with new location coordinates in rads
+    def adjust_by_weight(incident, point, weight=nil)
+      weight ||= REPORT_WEIGHT
+
+      new_lat = incident.latitude.to_rad + ( point[:lat] * weight )
+      new_lng = incident.longitude.to_rad + ( point[:lng] * weight )
+
+      { lat: new_lat, lng: new_lng }
     end
 
     # use when creating/updating report records
@@ -209,10 +311,8 @@ module Geoincident
       begin
         yield
       rescue ActiveRecord::RecordInvalid => invalid
-        Rails.logger.error "Could not set incident id for report"
-        Rails.logger.error invalid.record.errors.messages.to_s
-      else
-        Rails.logger.error "An error occured while updating a report record"
+        Geoincident.logger.error "Could not set incident id for report"
+        Geoincident.logger.error invalid.record.errors.messages.to_s
       end
     end
 
@@ -221,10 +321,8 @@ module Geoincident
       begin
         yield
       rescue ActiveRecord::RecordInvalid => invalid
-        Rails.logger.error "Could not create/update incident record"
-        Rails.logger.error invalid.record.errors.messages.to_s
-      else
-        Rails.logger.error "An error occured while updating an incident record"
+        Geoincident.logger.error "Could not create/update incident record"
+        Geoincident.logger.error invalid.record.errors.messages.to_s
       end
     end
 

@@ -18,8 +18,11 @@ require 'spec_helper'
 
 describe User do
 
-  before { @user = User.new(name: "Tets User", email: "test@example.com",
-                            password: "foobar", password_confirmation: "foobar") }
+  before do
+    @user = User.new(name: "Tets User", email: "test@example.com",
+                     password: "foobar", password_confirmation: "foobar")
+    @user.roles = Role.viewer
+  end
 
   subject { @user }
 
@@ -32,6 +35,13 @@ describe User do
 
   # associations
   it { should respond_to :reports }
+  it { should respond_to :roles }
+
+  # authorization methods
+  it { should respond_to :can? }
+  it { should respond_to :admin? }
+  it { should respond_to :viewer? }
+  it { should respond_to :reporter? }
 
   it { should be_valid }
 
@@ -76,6 +86,7 @@ describe User do
       user_already_on_db = @user.dup
       # set address to upcase to test for case sensitivity
       user_already_on_db.email = @user.email.upcase
+      user_already_on_db.roles = Role.viewer
       user_already_on_db.save
     end
     it { should_not be_valid }
@@ -104,7 +115,7 @@ describe User do
       it { should == retrieved_user.authenticate(@user.password) }
     end
 
-    describe "when passwowrd is not correct" do
+    describe "when password is not correct" do
       # we use this user object more than once
       let(:user_with_invalid_password) { retrieved_user.authenticate("invalid") }
 
@@ -113,31 +124,64 @@ describe User do
     end
   end
 
-  describe "report associations" do
+  describe "association" do
+    describe "report" do
 
-    # we want to return user reports in reverse chronological order
-    # in user profiles
-    before { @user.save }
-    let!(:old_report) do
-      FactoryGirl.create(:report, user: @user, created_at: 1.day.ago)
-    end
+      # we want to return user reports in reverse chronological order
+      # in user profiles
+      before { @user.save }
+      let!(:old_report) do
+        FactoryGirl.create(:report, user: @user, created_at: 1.day.ago)
+      end
 
-    let!(:new_report) do
-      FactoryGirl.create(:report, user: @user, created_at: 1.hour.ago)
-    end
+      let!(:new_report) do
+        FactoryGirl.create(:report, user: @user, created_at: 1.hour.ago)
+      end
 
-    it "should return newer report first" do
-      @user.reports.should == [new_report, old_report]
-    end
+      it "should return newer report first" do
+        @user.reports.should == [new_report, old_report]
+      end
 
-    # remove reports when deleting user
-    it "should destroy associated reports" do
-      reports = @user.reports
-      @user.destroy
-      reports.each do |report|
-        Report.find_by_id(report.id).should be_nil
+      # remove reports when deleting user
+      it "should destroy associated reports" do
+        reports = @user.reports
+        @user.destroy
+        reports.each do |report|
+          Report.find_by_id(report.id).should be_nil
+        end
       end
     end
+
+    describe "role" do
+      before { @user.roles = [] }
+      it { should_not be_valid }
+    end
+  end
+
+  describe "authorization" do
+    before { @user.save }
+
+    describe "role viewer" do
+      before { @user.roles = Role.viewer }
+      it "should have the viewer role assigned" do
+        expect(@user.viewer?).to be_true
+      end
+    end
+
+    describe "role reporter" do
+      before { @user.roles = Role.reporter }
+      it "should have the reporter role assigned" do
+        expect(@user.reporter?).to be_true
+      end
+    end
+
+    describe "role admin" do
+      before { @user.roles = Role.admin }
+      it "should have the admin role assigned" do
+        expect(@user.admin?).to be_true
+      end
+    end
+
   end
 end
 
