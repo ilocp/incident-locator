@@ -17,6 +17,7 @@ group :development, :test do
   gem 'spork'
   gem 'guard-rspec'
   gem 'guard-spork'
+  gem 'rb-inotify', '~> 0.9'
 end
 
 group :test do
