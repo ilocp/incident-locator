@@ -1,0 +1,16 @@
+%li
+  = gravatar_for user, size: 32
+  = link_to user.name, user
+  = surround '( ', ' )' do
+    = user.email
+  %p
+    %strong User roles :
+    = surround ' [ ', ' ]' do
+      - user.roles.each_with_index do |role, index|
+        = role.name
+        - if index != user.roles.size-1
+          = ","
+  %p
+    - unless user.reporter?
+      = link_to "Make this user reporter",
+        admin_grant_reporter_path(user)

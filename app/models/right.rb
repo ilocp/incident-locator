@@ -28,6 +28,7 @@ class Right < ActiveRecord::Base
     'show'    => 'READ',
     'index'   => 'READ',
     'map'     => 'READ',
-    'home'    => 'READ'
+    'home'    => 'READ',
+    'grant_reporter' => 'READ'
   }
 end

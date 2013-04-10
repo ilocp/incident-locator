@@ -1,9 +1,7 @@
 language: ruby
 
-# we run 1.9.3 but heroku runs 1.9.2
 rvm:
   - 1.9.3
-  - 1.9.2
 
 env: DB=sqlite
 
