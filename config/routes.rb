@@ -72,4 +72,8 @@ IncidentLocator::Application.routes.draw do
     match 'profile' => 'users#show', :via => :get
     match 'report' => 'reports#create', :via => :post
   end
+
+  namespace :admin do
+    resources :users, only: [:index]
+  end
 end
