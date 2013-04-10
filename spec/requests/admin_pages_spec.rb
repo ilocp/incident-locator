@@ -55,6 +55,61 @@ describe "Admin pages" do
         end
       end
     end
+  end
 
+  describe "grant reporter" do
+    let!(:non_reporter) { FactoryGirl.create(:user) }
+
+    describe "as non admin" do
+      before do
+        sign_in viewer
+        visit admin_grant_reporter_path(non_reporter)
+      end
+
+      it "should not allow access" do
+        expect(current_path).to eq(root_path)
+      end
+
+      it "should not update user roles" do
+        expect(non_reporter.roles).to eq(Role.viewer)
+      end
+    end
+
+    describe "as admin user" do
+      before { sign_in admin }
+
+      describe "on a non-reporter user" do
+        before { visit admin_grant_reporter_path(non_reporter) }
+
+        it "should add the reporter role to that user" do
+          expect(non_reporter.reporter?).to eq(true)
+        end
+
+        it "should redirect to the admin users page" do
+          expect(current_path).to eq(admin_users_path)
+        end
+
+        it "should have a successful flash message" do
+          page.should have_success_msg('privileges successfully')
+        end
+      end
+
+      describe "on a user who is already a reporter" do
+        before { visit admin_grant_reporter_path(reporter) }
+
+        it "should redirect to the admin users page" do
+          expect(current_path).to eq(admin_users_path)
+        end
+
+        it "should have error flash message" do
+          page.should have_error_msg('Cannot find user or user is already a reporter')
+        end
+
+        it "should not alter this user's role" do
+          expect(reporter.reporter?).to eq(true)
+        end
+      end
+
+    end
   end
 end

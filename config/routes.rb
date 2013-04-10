@@ -75,5 +75,6 @@ IncidentLocator::Application.routes.draw do
 
   namespace :admin do
     resources :users, only: [:index]
+    match 'grant_reporter/:id' => 'users#grant_reporter', :via => :get, :as => 'grant_reporter'
   end
 end

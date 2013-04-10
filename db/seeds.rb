@@ -23,6 +23,9 @@ incidents_read = Right.find_or_create_by_resource_and_operation!(resource: 'inci
 sessions_delete = Right.find_or_create_by_resource_and_operation!(resource: 'sessions', operation: 'DELETE')
 static_read = Right.find_or_create_by_resource_and_operation!(resource: 'static_pages', operation: 'READ')
 
+# Permissions for admin actions
+grant_reporter = Right.find_or_create_by_resource_and_operation!(resource: 'grant_reporter', operation: 'READ')
+
 # Clear old permissions before assignment
 viewers.rights.destroy_all
 reporters.rights.destroy_all
@@ -35,3 +38,4 @@ reporters.rights << viewers.rights
 reporters.rights << reports_read << reports_create
 
 admins.rights << reporters.rights
+admins.rights << grant_reporter

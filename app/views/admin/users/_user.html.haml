@@ -10,3 +10,7 @@
         = role.name
         - if index != user.roles.size-1
           = ","
+  %p
+    - unless user.reporter?
+      = link_to "Make this user reporter",
+        admin_grant_reporter_path(user)
