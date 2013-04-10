@@ -8,16 +8,16 @@ gem 'rails', '3.2.13'
 group :development do
   gem 'annotate', ">=2.5.0"
   gem 'debugger'
+  gem 'spork'
+  gem 'guard-rspec'
+  gem 'guard-spork'
+  gem 'rb-inotify', '~> 0.9'
 end
 
 group :development, :test do
   gem 'sqlite3'
   gem 'rspec-rails'
   gem 'faker'
-  gem 'spork'
-  gem 'guard-rspec'
-  gem 'guard-spork'
-  gem 'rb-inotify', '~> 0.9'
 end
 
 group :test do
