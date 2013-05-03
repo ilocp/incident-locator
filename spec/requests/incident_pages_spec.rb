@@ -19,6 +19,8 @@ describe "Incident pages" do
     it { should have_content(incident.longitude) }
     it { should have_content(incident.radius) }
     it { should have_content(incident.reports.size) }
+    it { should have_link(incident.reports.size,
+                          href: map_report_path(incident.id)) }
   end
 
   describe "map" do

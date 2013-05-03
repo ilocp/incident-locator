@@ -8,6 +8,7 @@ IncidentLocator::Application.routes.draw do
 
   # reports
   resources :reports, only: [:new, :create]
+  match 'reports/map/:incident', to: 'reports#map', :via => :get, :as => 'map_report'
 
   # incidents
   resources :incidents, only: [:index]

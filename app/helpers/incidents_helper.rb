@@ -54,4 +54,21 @@ module IncidentsHelper
     map_data
   end
 
+  # sets the appropriate settings+data format for displaying all incidents with
+  # gmaps4rails
+  def format_reports(data)
+    map_data = MAP_OPTIONS
+
+    # set viewport when we don't have data
+    if data.empty?
+      map_data = MAP_OPTIONS_NO_DATA
+    else
+      map_data = MAP_OPTIONS
+      # show markers for reports
+      map_data[:markers] = { data: json_markers(data) }
+    end
+
+    map_data
+  end
+
 end
