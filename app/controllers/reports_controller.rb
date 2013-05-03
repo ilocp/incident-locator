@@ -25,4 +25,9 @@ class ReportsController < ApplicationController
       render 'new'
     end
   end
+
+  def map
+    @incident = Incident.find_by_id params[:incident]
+    @reports_data = format_reports(@incident.reports)
+  end
 end

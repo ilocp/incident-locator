@@ -2,3 +2,5 @@
   %td= report.latitude
   %td= report.longitude
   %td= "#{report.heading}°"
+  %td= report.created_at.to_s :date
+  %td= report.created_at.to_s :time
