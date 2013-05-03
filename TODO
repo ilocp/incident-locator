@@ -1,8 +1,7 @@
 TODO
 ----
-* Check if we need to run the detection process as a background job
-* Reports should include IMEI and phone number [major]
+* Run the detection process as a background job [postponed]
+* Reports should include IMEI and phone number [postponed]
 * Paginate reports and incidents [low]
-* Support viewing individual reports in a map
-* Support for incident photo uploading
+* Support for incident photo uploading [postponed]
 * Email verification on registration [low]
