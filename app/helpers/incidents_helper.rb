@@ -39,13 +39,12 @@ module IncidentsHelper
   # sets the appropriate settings+data format for displaying all incidents with
   # gmaps4rails
   def format_incidents(data)
-    map_data = MAP_OPTIONS
+    map_data = Hash[MAP_OPTIONS]
 
     # set viewport when we don't have data
     if data.empty?
       map_data = MAP_OPTIONS_NO_DATA
     else
-      map_data = MAP_OPTIONS
       # show circles and markers for incidents
       map_data[:circles] = { data: json_circles(data) }
       map_data[:markers] = { data: json_markers(data) }
@@ -57,13 +56,12 @@ module IncidentsHelper
   # sets the appropriate settings+data format for displaying all incidents with
   # gmaps4rails
   def format_reports(data)
-    map_data = MAP_OPTIONS
+    map_data = Hash[MAP_OPTIONS]
 
     # set viewport when we don't have data
     if data.empty?
       map_data = MAP_OPTIONS_NO_DATA
     else
-      map_data = MAP_OPTIONS
       # show markers for reports
       map_data[:markers] = { data: json_markers(data) }
     end
