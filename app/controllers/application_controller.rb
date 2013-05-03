@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   include SessionsHelper
   include UsersHelper
-  include IncidentsHelper
+  include MapsHelper
 
   private
 

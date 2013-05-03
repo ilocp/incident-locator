@@ -1,4 +1,4 @@
-module IncidentsHelper
+module MapsHelper
 
   private
 
