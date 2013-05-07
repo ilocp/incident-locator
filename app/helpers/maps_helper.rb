@@ -14,9 +14,12 @@ module MapsHelper
   # default map options when no data is available - center view on Europe
   MAP_OPTIONS_NO_DATA = {
     map_options: {
-      type: 'SATELLITE', auto_adjust: false,
-      center_latitude: 47.635784, center_longitude: 17.050781,
-      zoom: 4, auto_adjust: false
+      type: 'SATELLITE',
+      auto_adjust: false,
+      center_latitude: 47.635784,
+      center_longitude: 17.050781,
+      zoom: 4,
+      auto_adjust: false
     }
   }
 
