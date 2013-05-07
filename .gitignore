@@ -1,7 +1,7 @@
 /.bundle
 /vendor/*
 /db/*.sqlite3
-/log/*.log
+/log/*
 /tmp
 *.rbc
 *.sassc

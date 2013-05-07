@@ -34,4 +34,9 @@ IncidentLocator::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  # Keep 2 files of 500k
+  require 'fileutils'
+  config.log_path = File.expand_path(File.join(Rails.root, "/log/#{Rails.env}.log"))
+  config.logger = Logger.new(config.log_path, 1, 500 * 1024)
 end
