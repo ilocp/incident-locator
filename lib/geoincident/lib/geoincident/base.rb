@@ -12,6 +12,7 @@ module Geoincident
 
   def Geoincident::process(report)
     Geoincident.logger.debug "Incident detection process started on #{Time.now}"
+    Geoincident.logger.push_tags(["DETECTION"])
 
     detector = Detector.new
 
@@ -31,6 +32,7 @@ module Geoincident
       end
     end
     Geoincident.logger.debug "Incident detection process ended on #{Time.now}"
+    Geoincident.logger.pop_tags
   end
 
 end
