@@ -40,4 +40,9 @@ IncidentLocator::Application.configure do
   silence_warnings do
     BCrypt::Engine::DEFAULT_COST = BCrypt::Engine::MIN_COST
   end
+
+  # Keep 2 files of 500k
+  require 'fileutils'
+  config.log_path = File.expand_path(File.join(Rails.root, "/log/#{Rails.env}.log"))
+  config.logger = Logger.new(config.log_path, 1, 500 * 1024)
 end
