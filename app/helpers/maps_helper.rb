@@ -3,7 +3,13 @@ module MapsHelper
   private
 
   # default map options when showing data
-  MAP_OPTIONS = { map_options: { type: 'SATELLITE', auto_adjust: true } }
+  MAP_OPTIONS = {
+    map_options: {
+      type: 'SATELLITE',
+      auto_adjust: true,
+      raw: '{ scaleControl: true }'
+    }
+  }
 
   # default map options when no data is available - center view on Europe
   MAP_OPTIONS_NO_DATA = {
