@@ -11,8 +11,8 @@ module Geoincident
   #autoload :ActsAsIncident,     'geoincident/acts_as_incident'
 
   def Geoincident::process(report)
-    Geoincident.logger.debug "Incident detection process started on #{Time.now}"
     Geoincident.logger.push_tags(["DETECTION"])
+    Geoincident.logger.info "Incident detection process started on #{Time.now}"
 
     detector = Detector.new
 
@@ -31,7 +31,7 @@ module Geoincident
         detector.scan_reports(new_incident)
       end
     end
-    Geoincident.logger.debug "Incident detection process ended on #{Time.now}"
+    Geoincident.logger.info "Incident detection process ended on #{Time.now}"
     Geoincident.logger.pop_tags
   end
 

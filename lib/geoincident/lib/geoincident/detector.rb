@@ -52,7 +52,7 @@ module Geoincident
             incident.save!
           end
 
-          Geoincident.logger.debug "Reports with IDs #{reference_report.id} and #{report.id} "\
+          Geoincident.logger.info "Reports with IDs #{reference_report.id} and #{report.id} "\
                                    "created new incident with data: #{incident_data.to_s}"
 
           # attach these reports to the new incident
@@ -153,7 +153,7 @@ module Geoincident
                               location.longitude.to_rad,
                               radius)
 
-      Geoincident.logger.debug "Calculated bounding box with coordinates: "\
+      Geoincident.logger.info "Calculated bounding box with coordinates: "\
                                "min: [#{box[:lat_min].to_degrees} / #{box[:lng_min].to_degrees}] "\
                                "max: [#{box[:lat_max].to_degrees} / #{box[:lng_max].to_degrees}]"
 
@@ -194,7 +194,7 @@ module Geoincident
 
       # we can adjust incident location only if angle <= 90
       if angle.to_degrees.abs > 90
-        Geoincident.logger.debug "Report #{report.id} is not viable for location adjustment"
+        Geoincident.logger.info "Report #{report.id} is not viable for location adjustment"
         return false
       end
 
@@ -206,7 +206,7 @@ module Geoincident
       with_report_logger do
         report.incident_id = incident.id
         report.save!
-        Geoincident.logger.debug "Report #{report.id} attached to incident #{incident.id}"
+        Geoincident.logger.info "Report #{report.id} attached to incident #{incident.id}"
       end
     end
 
@@ -241,10 +241,10 @@ module Geoincident
       reports_count = report_count(incident.id)
 
       if reports_count > REPORT_THRESHOLD
-        Geoincident.logger.debug "Adjusting incident location using weight-based algorithm"
+        Geoincident.logger.info "Adjusting incident location using weight-based algorithm"
         new_location = adjust_by_weight(incident, p_point)
       else
-        Geoincident.logger.debug "Adjusting incident location using number-based algorithm"
+        Geoincident.logger.info "Adjusting incident location using number-based algorithm"
         new_location = adjust_by_number(incident, p_point, reports_count)
       end
 
@@ -254,7 +254,7 @@ module Geoincident
 
       with_incident_logger { incident.save! }
 
-      Geoincident.logger.debug "Incident #{incident.id} location adjusted by report #{report.id} "\
+      Geoincident.logger.info "Incident #{incident.id} location adjusted by report #{report.id} "\
                                "at lat: #{incident.latitude} / lng: #{incident.longitude}"
     end
 
