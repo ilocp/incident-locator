@@ -1,4 +1,4 @@
-Incident Locator [![Code Climate][ccbadge]][ccrepo] [![development][cidev]][cirepo] [![master][cimaster]][cirepo] [![Dependency Status][gembadge]][gemrepo]
+Incident Locator [![Code Climate][ccbadge]][ccrepo] [![development][cidev]][cirepo] [![Dependency Status][gembadge]][gemrepo]
 ================
 
 About
@@ -134,10 +134,9 @@ License
 Under the BSD 3-Clause License. See `LICENSE`.
 
 
-[ccrepo]: https://codeclimate.com/github/tlatsas/incident-locator
-[ccbadge]: https://codeclimate.com/badge.png
-[cimaster]: https://secure.travis-ci.org/tlatsas/incident-locator.png?branch=master
-[cidev]: https://secure.travis-ci.org/tlatsas/incident-locator.png?branch=development
-[cirepo]: http://travis-ci.org/tlatsas/incident-locator
-[gemrepo]: https://gemnasium.com/tlatsas/incident-locator
-[gembadge]: https://gemnasium.com/tlatsas/incident-locator.png
+[ccrepo]: https://codeclimate.com/github/ilocp/incident-locator
+[ccbadge]: https://codeclimate.com/github/ilocp/incident-locator.png
+[cidev]: https://travis-ci.org/ilocp/incident-locator.png
+[cirepo]: http://travis-ci.org/ilocp/incident-locator
+[gemrepo]: https://gemnasium.com/ilocp/incident-locator
+[gembadge]: https://gemnasium.com/ilocp/incident-locator.png
