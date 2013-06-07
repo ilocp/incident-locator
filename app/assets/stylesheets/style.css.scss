@@ -35,50 +35,13 @@ footer {
 }
 
 /* front page */
-.box {
-  /* positioninig / size */
-  padding: 1.7em;
-  display: inline-block;
-  width: 128px;
-  height: 128px;
-  margin: 2em 2em 2em 0em;
-
-  /* borders */
-  border: 1px solid $border-gray;
-  border-radius: 4px 4px 4px 4px;
-  box-shadow: 0 0 6px #b0b0b0;
-
-  /* style */
-  background-color: #eee;
-
-  .txt {
-    font-size: 1.3em;
+.caption {
+  h3 {
     text-align: center;
-    margin-top: 5.5em;
   }
 }
 
-.btn-map {
-  background-image: url('map.png');
-  @include boxed_image;
+ul.thumbnails {
+  margin-top: 2em;
 }
 
-.btn-incidents {
-  background-image: url('incidents.png');
-  @include boxed_image;
-}
-
-.btn-android {
-  background-image: url('android.png');
-  @include boxed_image;
-}
-
-.btn-github {
-  background-image: url('octocat.png');
-  @include boxed_image;
-}
-
-.btn-signup {
-  background-image: url('signup.png');
-  @include boxed_image;
-}
