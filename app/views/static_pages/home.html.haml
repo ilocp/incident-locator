@@ -1,9 +1,16 @@
-%h1 Wellcome to Incident Identification Service
+%h1 Incident Locator Platform
 
-
--# service description
-%div
-  TODO
+.about-text
+  The incident locator platform aims to detect incidents (such as forest fires)
+  by utilizing reports sent from mobile clients. We assume that the clients
+  know only the approximate location of such incidents.
+  Each client sents its coordinates in terms of longitude and latitude and the
+  general direction where the device is pointing at.
+  The platform tries to combine multiple reports in order to accurately
+  determine the incident's location on the map.
+  This is a pilot implementation and currently only the Android platform is
+  supported. The server and the client code is freely available under the
+  3-clause BSD license.
 
 .row-fluid
   %ul.thumbnails
