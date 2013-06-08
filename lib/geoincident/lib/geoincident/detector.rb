@@ -248,6 +248,8 @@ module Geoincident
         new_location = adjust_by_number(incident, p_point, reports_count)
       end
 
+      Geoincident.logger.info "Incident #{incident.id} current location at "\
+                              "lat: #{incident.latitude} / lng: #{incident.longitude}"
       # update location
       incident.latitude = new_location[:lat].to_degrees
       incident.longitude = new_location[:lng].to_degrees

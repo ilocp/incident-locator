@@ -39,7 +39,11 @@ module MapsHelper
     json_array = []
 
     data.each do |record|
-      json_array << { lat: record.latitude, lng: record.longitude }
+      json_array << {
+        lat: record.latitude,
+        lng: record.longitude,
+        description: "id: #{record.id}"
+      }
     end
 
     json_array.to_json

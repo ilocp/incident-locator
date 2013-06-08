@@ -31,11 +31,15 @@ describe "User pages" do
     describe "reports" do
       it { should have_selector('h2', text: 'Incident reports') }
       it { should have_selector('div.reports table') }
+
+      it { should have_content(r1.id) }
       it { should have_content(r1.latitude) }
       it { should have_content(r1.longitude) }
       it { should have_content(r1.heading) }
       it { should have_content(r1.created_at.to_s :date) }
       it { should have_content(r1.created_at.to_s :time) }
+
+      it { should have_content(r2.id) }
       it { should have_content(r2.latitude) }
       it { should have_content(r2.longitude) }
       it { should have_content(r2.heading) }

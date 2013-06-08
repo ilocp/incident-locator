@@ -1,7 +1,7 @@
 !!! 5
 %html{ html_attrs('en-US') }
   %head
-    %title Incident Locator
+    %title Incident Locator Platform
     %meta{ :content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type" }
     = stylesheet_link_tag    "application", :media => "all"
     = javascript_include_tag "application"
@@ -10,18 +10,11 @@
   %body
     = render 'layouts/header'
 
-    .container-fluid
-      .row-fluid
-        .span2
-          -# later, when we have public pages we could use current_page?()
-          -# to test for certain paths that we don't want the sidebar to
-          -# show up
-          = render 'layouts/sidebar'
-        .span10
-          -# show all flash messages
-          - flash.each do |key, value|
-            %div{class: "alert alert-#{key}"}= value
+    .container
+      -# show all flash messages
+      - flash.each do |key, value|
+        %div{class: "alert alert-#{key}"}= value
 
-          = yield
+      = yield
 
     = render 'layouts/footer'
