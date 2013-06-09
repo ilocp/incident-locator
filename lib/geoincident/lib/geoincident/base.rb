@@ -35,23 +35,22 @@ module Geoincident
     existing_incident
   end
 
-  def run_static_incident_engine
+  def run_static_incident_engine(incident)
     nil
   end
 
-  def with_detector_logger(tags)
-    Geoincident.logger.push_tags(tags)
+  def Geoincident::process(report)
+    Geoincident.logger.push_tags(["DETECTION"])
     Geoincident.logger.info "Incident detection process started on #{Time.now}"
-    yield
+
+    incident = run_tracking_incident_engine report
+    unless incident.nil?
+      Geoincident.logger.info "Calculating average location #{Time.now}"
+      run_static_incident_engine incident
+    end
+
     Geoincident.logger.info "Incident detection process ended on #{Time.now}"
     Geoincident.logger.pop_tags
-  end
-
-  def Geoincident::process(report)
-    log_tags = ["DETECTION"]
-    with_detector_logger log_tags do
-      run_tracking_incident_engine report
-    end
   end
 
 end
