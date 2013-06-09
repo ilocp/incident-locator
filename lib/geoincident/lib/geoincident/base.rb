@@ -31,6 +31,11 @@ module Geoincident
         detector.scan_reports(new_incident)
       end
     end
+
+  def run_static_incident_engine
+    nil
+  end
+
     Geoincident.logger.info "Incident detection process ended on #{Time.now}"
     Geoincident.logger.pop_tags
   end
