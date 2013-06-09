@@ -17,12 +17,12 @@ module Geoincident
     detector = Detector.new
 
     # check if we can attach this report to an existing incident
-    found = detector.scan_incidents(report)
+    existing_incident = detector.scan_incidents(report)
 
     # we could not find incident to attach our report
     # try to create a new one using other reports from
     # the database
-    unless found
+    if existing_incident.nil?
       new_incident = detector.detect_new_incident(report)
 
       # scan other orphan reports as they may

@@ -86,10 +86,10 @@ module Geoincident
           adjust_incident_location(report, incident)
         end
 
-        return true
+        return incident
       end
 
-      false
+      nil
     end
 
     # Search all orphan reports and determine if any of them
