@@ -1,7 +1,7 @@
 module Geoincident
 
   require 'geoincident/constants'
-  require 'geoincident/helper/classes'
+  require 'geoincident/helper/types'
   require 'geoincident/helper/trig'
 
   class Detector
