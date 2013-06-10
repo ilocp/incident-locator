@@ -2,7 +2,7 @@ module Geoincident
 
   require 'geoincident/logger'
   require 'geoincident/version'
-  require 'geoincident/detector'
+  require 'geoincident/engines/tracking'
 
   extend self
 
@@ -13,7 +13,7 @@ module Geoincident
   #autoload :ActsAsIncident,     'geoincident/acts_as_incident'
 
   def run_tracking_incident_engine(report)
-    detector = Detector.new
+    detector = TrackingDetector.new
 
     # check if we can attach this report to an existing incident
     existing_incident = detector.scan_incidents(report)

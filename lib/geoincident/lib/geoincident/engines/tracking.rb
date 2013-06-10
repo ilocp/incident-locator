@@ -4,7 +4,7 @@ module Geoincident
   require 'geoincident/helper/types'
   require 'geoincident/helper/trig'
 
-  class Detector
+  class TrackingDetector
     # TODO: don't hardcode models
 
     def detect_new_incident(reference_report)
