@@ -55,7 +55,7 @@ module Geoincident
           intersection_point.longitude.to_rad
         )
 
-        if d1 <= 3000 and d2 <=3000:
+        if d1 <= AVG_DISTANCE and d2 <= AVG_DISTANCE:
           incidents.push(intersection_point)
         end
       end
