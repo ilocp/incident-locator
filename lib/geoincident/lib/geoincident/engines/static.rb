@@ -22,6 +22,7 @@ module Geoincident
       avg_location = calculate_average_location(possible_incidents)
       if avg_location.nil?
         return nil
+      end
 
     end
 
