@@ -18,17 +18,20 @@ module Geoincident
         return nil
       end
 
-      possible_incidents = get_incident_set(reports)
+      combinations = reports.combination(2).to_a
+      possible_incidents = get_incident_set(combinations)
       avg_location = calculate_average_location(possible_incidents)
       if avg_location.nil?
         return nil
       end
 
+      std_deviation = calculated_std_deviation(combinations, avg_location)
+
     end
 
-    def get_incident_set(reports)
+    def get_incident_set(combinations)
       incidents = []
-      reports.combination(2) |c| do
+      combinations.each |c| do
         intersection_point = Trig.points_intersection(
           c[0].latitude.to_rad,
           c[0].longitude.to_rad,
@@ -68,6 +71,7 @@ module Geoincident
       incidents_count = incidents.length
       if incidents_count == 0
         return nil
+      end
 
       avg_lat = avg_lng = 0
       incidents.each |i| do
@@ -81,5 +85,11 @@ module Geoincident
       { lat: avg_lat, lng: avg_lng }
     end
 
+    def calculate_std_deviation(combinations, avg_location)
+      point = combinations.last
+      d1 = (point.latitude - avg_location['lat']) * (point.latitude - avg_location['lat'])
+      d2 = (point.longitude - avg_location['lng']) * (point.longitude - avg_location['lng'])
+      std_dev = Math.sqrt((d1 + d2) / combinations.length)
+    end
   end
 end
