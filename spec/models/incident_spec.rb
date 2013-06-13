@@ -21,7 +21,8 @@
 require 'spec_helper'
 
 describe Incident do
-  before { @incident = Incident.new(latitude: 10.1234567, longitude: 30.7654321, radius: 200) }
+  before { @incident = Incident.new(latitude: 10.1234567, longitude: 30.7654321,
+                                    radius: 200) }
 
   subject { @incident }
 
