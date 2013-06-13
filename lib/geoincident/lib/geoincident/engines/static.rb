@@ -1,6 +1,6 @@
 module Geoincident
   require 'geoincident/constants'
-  require 'geonicident/helper/types'
+  require 'geoincident/helper/types'
   require 'geoincident/helper/trig'
 
   class StaticDetector
@@ -29,9 +29,13 @@ module Geoincident
 
     end
 
+    # filter out possible incidents that are generated outside of a specific
+    # range
+    #
+    # returns a list of hashes with :lat and :lng information
     def get_incident_set(combinations)
       incidents = []
-      combinations.each |c| do
+      combinations.each do |c|
         intersection_point = Trig.points_intersection(
           c[0].latitude.to_rad,
           c[0].longitude.to_rad,
@@ -48,18 +52,18 @@ module Geoincident
         d1 = Trig.location_distance(
           c[0].latitude.to_rad,
           c[0].longitude.to_rad,
-          intersection_point.latitude.to_rad,
-          intersection_point.longitude.to_rad
+          intersection_point[:lat],
+          intersection_point[:lng]
         )
 
         d2 = Trig.location_distance(
           c[1].latitude.to_rad,
           c[1].longitude.to_rad,
-          intersection_point.latitude.to_rad,
-          intersection_point.longitude.to_rad
+          intersection_point[:lat],
+          intersection_point[:lng]
         )
 
-        if d1 <= AVG_DISTANCE and d2 <= AVG_DISTANCE:
+        if d1 <= AVG_DISTANCE and d2 <= AVG_DISTANCE
           incidents.push(intersection_point)
         end
       end
@@ -74,9 +78,9 @@ module Geoincident
       end
 
       avg_lat = avg_lng = 0
-      incidents.each |i| do
-        avg_lat += i.latitude
-        avg_lng += i.longitude
+      incidents.each do |incident|
+        avg_lat += incident[:lat]
+        avg_lng += incident[:lng]
       end
 
       avg_lat /= incidents_count
@@ -87,8 +91,8 @@ module Geoincident
 
     def calculate_std_deviation(combinations, avg_location)
       point = combinations.last
-      d1 = (point.latitude - avg_location['lat']) * (point.latitude - avg_location['lat'])
-      d2 = (point.longitude - avg_location['lng']) * (point.longitude - avg_location['lng'])
+      d1 = (point.latitude - avg_location[:lat]) * (point.latitude - avg_location[:lat])
+      d2 = (point.longitude - avg_location[:lng]) * (point.longitude - avg_location[:lng])
       std_dev = Math.sqrt((d1 + d2) / combinations.length)
     end
   end

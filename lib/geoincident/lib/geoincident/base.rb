@@ -3,6 +3,7 @@ module Geoincident
   require 'geoincident/logger'
   require 'geoincident/version'
   require 'geoincident/engines/tracking'
+  require 'geoincident/engines/static'
 
   extend self
 
