@@ -9,6 +9,9 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  reports_count :integer          default(0)
+#  avg_lat       :float
+#  avg_lng       :float
+#  std_dev       :float
 #
 # Indexes
 #
@@ -25,6 +28,9 @@ describe Incident do
   it { should respond_to :latitude }
   it { should respond_to :longitude }
   it { should respond_to :radius }
+  it { should respond_to :avg_lat }
+  it { should respond_to :avg_lng }
+  it { should respond_to :std_dev }
 
   it { should respond_to :reports }
 
