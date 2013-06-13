@@ -27,6 +27,10 @@ module Geoincident
 
       std_deviation = calculated_std_deviation(combinations, avg_location)
 
+      incident.avg_lat = avg_location[:lat]
+      incident.avg_lng = avg_location[:lng]
+      incident.std_dev = std_deviation
+      incident.save!
     end
 
     # filter out possible incidents that are generated outside of a specific

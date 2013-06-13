@@ -37,7 +37,8 @@ module Geoincident
   end
 
   def run_static_incident_engine(incident)
-    nil
+    detector = StaticDetector.new
+    detector.run incident
   end
 
   def Geoincident::process(report)
