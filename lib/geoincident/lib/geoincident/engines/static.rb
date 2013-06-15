@@ -25,7 +25,7 @@ module Geoincident
         return nil
       end
 
-      std_deviation = calculated_std_deviation(combinations, avg_location)
+      std_deviation = calculate_std_deviation(possible_incidents, avg_location)
 
       incident.avg_lat = avg_location[:lat]
       incident.avg_lng = avg_location[:lng]
@@ -93,11 +93,11 @@ module Geoincident
       { lat: avg_lat, lng: avg_lng }
     end
 
-    def calculate_std_deviation(combinations, avg_location)
-      point = combinations.last
-      d1 = (point.latitude - avg_location[:lat]) * (point.latitude - avg_location[:lat])
-      d2 = (point.longitude - avg_location[:lng]) * (point.longitude - avg_location[:lng])
-      std_dev = Math.sqrt((d1 + d2) / combinations.length)
+    def calculate_std_deviation(possible_incidents, avg_location)
+      point = possible_incidents.last
+      d1 = (point[:lat] - avg_location[:lat]) * (point[:lat] - avg_location[:lat])
+      d2 = (point[:lng] - avg_location[:lng]) * (point[:lng] - avg_location[:lng])
+      std_dev = Math.sqrt((d1 + d2) / possible_incidents.length)
     end
   end
 end
