@@ -27,8 +27,8 @@ module Geoincident
 
       std_deviation = calculate_std_deviation(possible_incidents, avg_location)
 
-      incident.avg_lat = avg_location[:lat]
-      incident.avg_lng = avg_location[:lng]
+      incident.avg_lat = avg_location[:lat].to_degrees
+      incident.avg_lng = avg_location[:lng].to_degrees
       incident.std_dev = std_deviation
       incident.save!
     end
