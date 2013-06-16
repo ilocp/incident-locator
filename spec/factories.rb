@@ -26,6 +26,9 @@ FactoryGirl.define do
     latitude 50.853584
     longitude 4.362946
     radius 200
+    #avg_lat 0.0
+    #avg_lng 0.0
+    #std_dev 0.0
   end
 end
 

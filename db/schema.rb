@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121025091927) do
+ActiveRecord::Schema.define(:version => 20130613095643) do
 
   create_table "assignments", :force => true do |t|
     t.integer  "role_id"
@@ -38,6 +38,9 @@ ActiveRecord::Schema.define(:version => 20121025091927) do
     t.datetime "created_at",                   :null => false
     t.datetime "updated_at",                   :null => false
     t.integer  "reports_count", :default => 0
+    t.float    "avg_lat"
+    t.float    "avg_lng"
+    t.float    "std_dev"
   end
 
   add_index "incidents", ["latitude", "longitude"], :name => "index_incidents_on_latitude_and_longitude"
