@@ -9,6 +9,9 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  reports_count :integer          default(0)
+#  avg_lat       :float
+#  avg_lng       :float
+#  std_dev       :float
 #
 # Indexes
 #
@@ -18,13 +21,17 @@
 require 'spec_helper'
 
 describe Incident do
-  before { @incident = Incident.new(latitude: 10.1234567, longitude: 30.7654321, radius: 200) }
+  before { @incident = Incident.new(latitude: 10.1234567, longitude: 30.7654321,
+                                    radius: 200) }
 
   subject { @incident }
 
   it { should respond_to :latitude }
   it { should respond_to :longitude }
   it { should respond_to :radius }
+  it { should respond_to :avg_lat }
+  it { should respond_to :avg_lng }
+  it { should respond_to :std_dev }
 
   it { should respond_to :reports }
 

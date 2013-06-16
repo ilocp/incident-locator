@@ -1,10 +1,10 @@
 module Geoincident
 
   require 'geoincident/constants'
-  require 'geoincident/helper/classes'
+  require 'geoincident/helper/types'
   require 'geoincident/helper/trig'
 
-  class Detector
+  class TrackingDetector
     # TODO: don't hardcode models
 
     def detect_new_incident(reference_report)
@@ -86,10 +86,10 @@ module Geoincident
           adjust_incident_location(report, incident)
         end
 
-        return true
+        return incident
       end
 
-      false
+      nil
     end
 
     # Search all orphan reports and determine if any of them

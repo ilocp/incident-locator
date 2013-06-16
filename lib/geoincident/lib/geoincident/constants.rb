@@ -15,4 +15,10 @@ module Geoincident
   # report weight
   # this number will give approximately a 100m deviation
   REPORT_WEIGHT = 0.00005
+
+  # distance used when calculating the average location
+  # if the generated incident is <= AVG_DISTANCE then it
+  # can be used to calculate the average location of the
+  # actual incident
+  AVG_DISTANCE = 3000
 end
