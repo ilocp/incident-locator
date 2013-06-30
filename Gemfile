@@ -26,6 +26,7 @@ group :test do
     gem 'factory_girl_rails'
     # rake is required by travis ci
     gem 'rake'
+    gem 'coveralls', require: false
 end
 
 group :production do
