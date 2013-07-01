@@ -1,4 +1,4 @@
-Incident Locator [![Code Climate][ccbadge]][ccrepo] [![development][cidev]][cirepo] [![Dependency Status][gembadge]][gemrepo]
+Incident Locator [![Code Climate][ccbadge]][ccrepo] [![development][cidev]][cirepo] [![Dependency Status][gembadge]][gemrepo] [![Test Coverage][coverbadge]][coverrepo]
 ================
 
 About
@@ -72,3 +72,6 @@ Under the BSD 3-Clause License. See `LICENSE`.
 [cirepo]: http://travis-ci.org/ilocp/incident-locator
 [gemrepo]: https://gemnasium.com/ilocp/incident-locator
 [gembadge]: https://gemnasium.com/ilocp/incident-locator.png
+[coverrepo]: https://coveralls.io/r/ilocp/incident-locator
+[coverbadge]: https://coveralls.io/repos/ilocp/incident-locator/badge.png
+
