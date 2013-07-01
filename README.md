@@ -1,5 +1,10 @@
-Incident Locator [![Code Climate][ccbadge]][ccrepo] [![development][cidev]][cirepo] [![Dependency Status][gembadge]][gemrepo] [![Test Coverage][coverbadge]][coverrepo]
+Incident Locator
 ================
+
+[![Code Climate][ccbadge]][ccrepo]
+[![development][cidev]][cirepo]
+[![Dependency Status][gembadge]][gemrepo]
+[![Test Coverage][coverbadge]][coverrepo]
 
 About
 -----
