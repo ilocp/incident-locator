@@ -78,5 +78,5 @@ Under the BSD 3-Clause License. See `LICENSE`.
 [gemrepo]: https://gemnasium.com/ilocp/incident-locator
 [gembadge]: https://gemnasium.com/ilocp/incident-locator.png
 [coverrepo]: https://coveralls.io/r/ilocp/incident-locator
-[coverbadge]: https://coveralls.io/repos/ilocp/incident-locator/badge.png
+[coverbadge]: https://coveralls.io/repos/ilocp/incident-locator/badge.png?branch=development
 
