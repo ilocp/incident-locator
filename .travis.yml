@@ -11,7 +11,7 @@ before_script:
 script: RAILS_ENV=test bundle exec rspec spec
 
 # avoid pg
-bundler_args: --without production
+bundler_args: --without production development
 
 # build for branches:
 branches:
