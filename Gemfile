@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 ruby "1.9.3"
-gem 'rails', '3.2.13'
+gem 'rails', '3.2.15'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -48,7 +48,7 @@ end
 gem 'haml-rails'
 gem 'jquery-rails'
 gem 'bootstrap-sass', '~> 2.1.0.0'
-gem 'gmaps4rails'
+gem 'gmaps4rails', '~> 1.5.0'
 
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0.0'
