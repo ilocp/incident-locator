@@ -1,7 +1,9 @@
 require 'rubygems'
-require 'spork'
+require 'coveralls'
 
-Spork.prefork do
+Coveralls.wear!('rails')
+
+def setup_environment
   # This file is copied to spec/ when you run 'rails generate rspec:install'
   ENV["RAILS_ENV"] ||= 'test'
   require File.expand_path("../../config/environment", __FILE__)
@@ -43,6 +45,15 @@ Spork.prefork do
   end
 end
 
-Spork.each_run do
-  # This code will be run each time you run your specs.
+unless (begin; require 'spork'; rescue LoadError; nil end).nil?
+  Spork.prefork do
+    setup_environment
+  end
+
+  Spork.each_run do
+    # This code will be run each time you run your specs.
+  end
+else
+  setup_environment
 end
+
